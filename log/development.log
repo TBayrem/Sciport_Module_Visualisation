@@ -1,0 +1,653 @@
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[35m (4.7ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY) /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.4ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-08-27 16:04:07.963302', '2026-08-27 16:04:07.963306') RETURNING "key" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Migrating to CreateFacilities (20260827160342)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (7.4ms)[0m  [1m[35mCREATE TABLE "facilities" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "facility_type" varchar, "city" varchar, "street" varchar, "zip_code" varchar, "phone_number" varchar, "website" varchar, "email_address" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827160342') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+Migrating to CreatePeople (20260827160354)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (3.4ms)[0m  [1m[35mCREATE TABLE "people" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "first_name" varchar, "last_name" varchar, "title" varchar, "email_address" varchar, "phone_number" varchar, "city" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827160354') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+Migrating to CreateResearchProjects (20260827160404)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (3.3ms)[0m  [1m[35mCREATE TABLE "research_projects" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "description" text, "start_date" date, "end_date" date, "funding_by" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827160404') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Migrating to CreatePublications (20260827160415)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (8.6ms)[0m  [1m[35mCREATE TABLE "publications" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "authors" varchar, "year_of_publication" integer, "publication_type" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827160415') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (3.4ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Migrating to CreatePatents (20260827160425)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (4.1ms)[0m  [1m[35mCREATE TABLE "patents" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "number" varchar, "holder" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827160425') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+Migrating to CreateJoinTableFacilityPerson (20260827160435)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (4.1ms)[0m  [1m[35mCREATE TABLE "facilities_people" ("facility_id" integer NOT NULL, "person_id" integer NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827160435') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Migrating to CreateJoinTableFacilityResearchProject (20260827160445)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (3.6ms)[0m  [1m[35mCREATE TABLE "facilities_research_projects" ("facility_id" integer NOT NULL, "research_project_id" integer NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827160445') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (3.8ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Migrating to CreateJoinTableFacilityPublication (20260827160455)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (4.0ms)[0m  [1m[35mCREATE TABLE "facilities_publications" ("facility_id" integer NOT NULL, "publication_id" integer NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827160455') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Migrating to CreateJoinTablePersonResearchProject (20260827160504)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (4.3ms)[0m  [1m[35mCREATE TABLE "people_research_projects" ("person_id" integer NOT NULL, "research_project_id" integer NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827160504') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (3.8ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+Migrating to CreateJoinTablePersonPublication (20260827160513)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (7.3ms)[0m  [1m[35mCREATE TABLE "people_publications" ("person_id" integer NOT NULL, "publication_id" integer NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827160513') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Migrating to CreateJoinTablePersonPatent (20260827160522)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (4.4ms)[0m  [1m[35mCREATE TABLE "patents_people" ("person_id" integer NOT NULL, "patent_id" integer NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827160522') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Migrating to CreateJoinTableResearchProjectPublication (20260827160531)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (4.6ms)[0m  [1m[35mCREATE TABLE "publications_research_projects" ("research_project_id" integer NOT NULL, "publication_id" integer NOT NULL) /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827160531') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Started GET "/" for ::1 at 2026-08-27 18:07:06 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering C:/Users/bayre/.local/share/gem/ruby/4.0.0/gems/railties-8.1.3.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered C:/Users/bayre/.local/share/gem/ruby/4.0.0/gems/railties-8.1.3.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.1ms | GC: 0.0ms)
+Completed 200 OK in 259ms (Views: 43.6ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/person" for ::1 at 2026-08-27 18:07:32 +0200
+  
+ActionController::RoutingError (No route matches [GET] "/person"):
+  
+Started GET "/facilities" for ::1 at 2026-08-27 18:08:07 +0200
+Processing by FacilitiesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering facilities/index.html.erb within layouts/application
+  [1m[36mFacility Load (6.7ms)[0m  [1m[34mSELECT "facilities".* FROM "facilities" /*action='index',application='SciportModuleVisualisation',controller='facilities'*/[0m
+  ↳ app/views/facilities/index.html.erb:9
+  Rendered facilities/index.html.erb within layouts/application (Duration: 15.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 232.7ms | GC: 0.0ms)
+Completed 200 OK in 718ms (Views: 238.2ms | ActiveRecord: 11.2ms (1 query, 0 cached) | GC: 31.3ms)
+
+
+Started GET "/facilities/new" for ::1 at 2026-08-27 18:08:11 +0200
+Processing by FacilitiesController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering facilities/new.html.erb within layouts/application
+  Rendered facilities/_form.html.erb (Duration: 87.2ms | GC: 0.0ms)
+  Rendered facilities/new.html.erb within layouts/application (Duration: 90.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 91.9ms | GC: 0.0ms)
+Completed 200 OK in 118ms (Views: 93.1ms | ActiveRecord: 0.8ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/facilities" for ::1 at 2026-08-27 18:08:16 +0200
+Processing by FacilitiesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering facilities/index.html.erb within layouts/application
+  [1m[36mFacility Load (0.3ms)[0m  [1m[34mSELECT "facilities".* FROM "facilities" /*action='index',application='SciportModuleVisualisation',controller='facilities'*/[0m
+  ↳ app/views/facilities/index.html.erb:9
+  Rendered facilities/index.html.erb within layouts/application (Duration: 4.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 5.9ms | GC: 0.0ms)
+Completed 200 OK in 18ms (Views: 7.2ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/facilities/new" for ::1 at 2026-08-27 18:08:19 +0200
+Processing by FacilitiesController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering facilities/new.html.erb within layouts/application
+  Rendered facilities/_form.html.erb (Duration: 4.1ms | GC: 0.0ms)
+  Rendered facilities/new.html.erb within layouts/application (Duration: 5.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 7.5ms | GC: 0.0ms)
+Completed 200 OK in 26ms (Views: 9.2ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/facilities" for ::1 at 2026-08-27 18:08:21 +0200
+Processing by FacilitiesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering facilities/index.html.erb within layouts/application
+  [1m[36mFacility Load (0.2ms)[0m  [1m[34mSELECT "facilities".* FROM "facilities" /*action='index',application='SciportModuleVisualisation',controller='facilities'*/[0m
+  ↳ app/views/facilities/index.html.erb:9
+  Rendered facilities/index.html.erb within layouts/application (Duration: 3.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 5.3ms | GC: 0.0ms)
+Completed 200 OK in 17ms (Views: 6.5ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/facilities" for ::1 at 2026-08-27 18:08:22 +0200
+Processing by FacilitiesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering facilities/index.html.erb within layouts/application
+  [1m[36mFacility Load (0.2ms)[0m  [1m[34mSELECT "facilities".* FROM "facilities" /*action='index',application='SciportModuleVisualisation',controller='facilities'*/[0m
+  ↳ app/views/facilities/index.html.erb:9
+  Rendered facilities/index.html.erb within layouts/application (Duration: 4.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 5.9ms | GC: 0.0ms)
+Completed 200 OK in 17ms (Views: 7.0ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/persons" for ::1 at 2026-08-27 18:08:30 +0200
+  
+ActionController::RoutingError (No route matches [GET] "/persons"):
+  
+Started GET "/people" for ::1 at 2026-08-27 18:08:34 +0200
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='SciportModuleVisualisation',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/index.html.erb within layouts/application (Duration: 6.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 8.3ms | GC: 0.0ms)
+Completed 200 OK in 40ms (Views: 17.8ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people/new" for ::1 at 2026-08-27 18:08:36 +0200
+Processing by PeopleController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/new.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 5.4ms | GC: 0.0ms)
+  Rendered people/new.html.erb within layouts/application (Duration: 10.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 13.9ms | GC: 0.0ms)
+Completed 200 OK in 45ms (Views: 15.6ms | ActiveRecord: 0.7ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/people" for ::1 at 2026-08-27 18:09:10 +0200
+Processing by PeopleController#create as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]", "person" => {"first_name" => "Bayrem", "last_name" => "Trabelsi", "title" => "", "email_address" => "[FILTERED]", "phone_number" => "01633724927", "city" => "Mannheim"}, "commit" => "Create Person"}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='SciportModuleVisualisation',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:27:in 'block in PeopleController#create'
+  [1m[36mPerson Create (3.4ms)[0m  [1m[32mINSERT INTO "people" ("first_name", "last_name", "title", "email_address", "phone_number", "city", "created_at", "updated_at") VALUES ('Bayrem', 'Trabelsi', '', 'bayrem.trabelsi@gmx.de', '01633724927', 'Mannheim', '2026-08-27 16:09:10.289000', '2026-08-27 16:09:10.289000') RETURNING "id" /*action='create',application='SciportModuleVisualisation',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:27:in 'block in PeopleController#create'
+  [1m[36mTRANSACTION (3.8ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='SciportModuleVisualisation',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:27:in 'block in PeopleController#create'
+Redirected to http://localhost:3000/people/1
+↳ app/controllers/people_controller.rb:28:in 'block (2 levels) in PeopleController#create'
+Completed 302 Found in 33ms (ActiveRecord: 7.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people/1" for ::1 at 2026-08-27 18:09:10 +0200
+Processing by PeopleController#show as TURBO_STREAM
+  Parameters: {"id" => "1"}
+  [1m[36mPerson Load (0.5ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='show',application='SciportModuleVisualisation',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:63:in 'PeopleController#set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/show.html.erb within layouts/application
+  Rendered people/_person.html.erb (Duration: 1.4ms | GC: 0.0ms)
+  Rendered people/show.html.erb within layouts/application (Duration: 32.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 36.5ms | GC: 0.0ms)
+Completed 200 OK in 101ms (Views: 38.8ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people" for ::1 at 2026-08-27 18:09:14 +0200
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  [1m[36mPerson Load (0.4ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='SciportModuleVisualisation',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_person.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 8.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 12.3ms | GC: 0.0ms)
+Completed 200 OK in 43ms (Views: 14.3ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people/new" for ::1 at 2026-08-27 18:09:18 +0200
+Processing by PeopleController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/new.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 17.4ms | GC: 0.0ms)
+  Rendered people/new.html.erb within layouts/application (Duration: 24.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 42.4ms | GC: 0.0ms)
+Completed 200 OK in 114ms (Views: 55.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people/new" for ::1 at 2026-08-27 18:09:18 +0200
+Processing by PeopleController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/new.html.erb within layouts/application
+  Rendered people/_form.html.erb (Duration: 3.0ms | GC: 0.0ms)
+  Rendered people/new.html.erb within layouts/application (Duration: 3.7ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 5.5ms | GC: 0.0ms)
+Completed 200 OK in 16ms (Views: 6.5ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people/1" for ::1 at 2026-08-27 18:09:18 +0200
+Processing by PeopleController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='show',application='SciportModuleVisualisation',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:63:in 'PeopleController#set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/show.html.erb within layouts/application
+  Rendered people/_person.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered people/show.html.erb within layouts/application (Duration: 1.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 3.1ms | GC: 0.0ms)
+Completed 200 OK in 16ms (Views: 4.3ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Migrating to AddApiIdToFacilities (20260827162423)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (4.4ms)[0m  [1m[35mALTER TABLE "facilities" ADD "api_id" varchar /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827162423') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (3.3ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+Migrating to AddApiIdToPeople (20260827162434)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (3.5ms)[0m  [1m[35mALTER TABLE "people" ADD "api_id" varchar /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827162434') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Migrating to AddApiIdToResearchProjects (20260827162445)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (4.1ms)[0m  [1m[35mALTER TABLE "research_projects" ADD "api_id" varchar /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827162445') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Migrating to AddApiIdToPublications (20260827162456)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (5.4ms)[0m  [1m[35mALTER TABLE "publications" ADD "api_id" varchar /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827162456') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (3.3ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Migrating to AddApiIdToPatents (20260827162507)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[35m (5.7ms)[0m  [1m[35mALTER TABLE "patents" ADD "api_id" varchar /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260827162507') RETURNING "version" /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mCOMMIT TRANSACTION /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Using vips to process variants requires the libvips library. Please install libvips using the instructions on the libvips website.
+Started GET "/people/1" for ::1 at 2026-08-27 18:27:03 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Processing by PeopleController#show as HTML
+  Parameters: {"id" => "1"}
+  [1m[36mPerson Load (0.3ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = 1 LIMIT 1 /*action='show',application='SciportModuleVisualisation',controller='people'*/[0m
+  ↳ app/controllers/people_controller.rb:133:in 'PeopleController#set_person'
+  Rendering layout layouts/application.html.erb
+  Rendering people/show.html.erb within layouts/application
+  Rendered people/_person.html.erb (Duration: 0.8ms | GC: 0.0ms)
+  Rendered people/show.html.erb within layouts/application (Duration: 32.9ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 72.4ms | GC: 15.6ms)
+Completed 200 OK in 352ms (Views: 102.8ms | ActiveRecord: 8.2ms (1 query, 0 cached) | GC: 78.1ms)
+
+
+Started GET "/" for ::1 at 2026-08-27 18:27:08 +0200
+Processing by HomeController#index as HTML
+  [1m[36mFacility Count (0.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "facilities" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:179:in 'HomeController#set_counts'
+  [1m[36mPerson Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "people" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:180:in 'HomeController#set_counts'
+  [1m[36mResearchProject Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "research_projects" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:181:in 'HomeController#set_counts'
+  [1m[36mPublication Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "publications" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:182:in 'HomeController#set_counts'
+  [1m[36mPatent Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "patents" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:183:in 'HomeController#set_counts'
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  [1m[36mFacility Load (0.2ms)[0m  [1m[34mSELECT "facilities".* FROM "facilities" LIMIT 10 /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:77
+  [1m[36mPerson Load (0.3ms)[0m  [1m[34mSELECT "people".* FROM "people" LIMIT 10 /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:95
+  Rendered home/index.html.erb within layouts/application (Duration: 10.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 12.2ms | GC: 0.0ms)
+Completed 200 OK in 121ms (Views: 20.8ms | ActiveRecord: 1.7ms (7 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/publications" for ::1 at 2026-08-27 18:27:13 +0200
+Processing by PublicationsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering publications/index.html.erb within layouts/application
+  [1m[36mPublication Load (0.3ms)[0m  [1m[34mSELECT "publications".* FROM "publications" /*action='index',application='SciportModuleVisualisation',controller='publications'*/[0m
+  ↳ app/views/publications/index.html.erb:9
+  Rendered publications/index.html.erb within layouts/application (Duration: 7.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 9.1ms | GC: 0.0ms)
+Completed 200 OK in 34ms (Views: 15.7ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/publications" for ::1 at 2026-08-27 18:27:14 +0200
+Processing by PublicationsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering publications/index.html.erb within layouts/application
+  [1m[36mPublication Load (0.5ms)[0m  [1m[34mSELECT "publications".* FROM "publications" /*action='index',application='SciportModuleVisualisation',controller='publications'*/[0m
+  ↳ app/views/publications/index.html.erb:9
+  Rendered publications/index.html.erb within layouts/application (Duration: 16.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 37.6ms | GC: 0.0ms)
+Completed 200 OK in 85ms (Views: 41.2ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/import_all" for ::1 at 2026-08-27 18:27:15 +0200
+Processing by HomeController#import_all as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]"}
+Completed 500 Internal Server Error in 27ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+LoadError (cannot load such file -- httparty):
+  
+app/services/sciport_api_service.rb:14:in '<main>'
+app/controllers/home_controller.rb:82:in 'HomeController#import_all'
+Started GET "/research_projects" for ::1 at 2026-08-27 18:27:33 +0200
+Processing by ResearchProjectsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering research_projects/index.html.erb within layouts/application
+  [1m[36mResearchProject Load (0.3ms)[0m  [1m[34mSELECT "research_projects".* FROM "research_projects" /*action='index',application='SciportModuleVisualisation',controller='research_projects'*/[0m
+  ↳ app/views/research_projects/index.html.erb:9
+  Rendered research_projects/index.html.erb within layouts/application (Duration: 4.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 6.3ms | GC: 0.0ms)
+Completed 200 OK in 26ms (Views: 12.9ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/people" for ::1 at 2026-08-27 18:27:36 +0200
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  [1m[36mPerson Load (0.3ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='SciportModuleVisualisation',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_person.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 9.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 13.1ms | GC: 0.0ms)
+Completed 200 OK in 63ms (Views: 14.9ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/import_people" for ::1 at 2026-08-27 18:27:40 +0200
+Processing by HomeController#import_people as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]"}
+Completed 500 Internal Server Error in 26ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+LoadError (cannot load such file -- httparty):
+  
+app/services/sciport_api_service.rb:14:in '<main>'
+app/controllers/home_controller.rb:49:in 'HomeController#import_people'
+Started GET "/people" for ::1 at 2026-08-27 18:27:46 +0200
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='SciportModuleVisualisation',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_person.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 5.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 6.9ms | GC: 0.0ms)
+Completed 200 OK in 19ms (Views: 7.9ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for ::1 at 2026-08-27 18:27:53 +0200
+Processing by HomeController#index as HTML
+  [1m[36mFacility Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "facilities" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:179:in 'HomeController#set_counts'
+  [1m[36mPerson Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "people" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:180:in 'HomeController#set_counts'
+  [1m[36mResearchProject Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "research_projects" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:181:in 'HomeController#set_counts'
+  [1m[36mPublication Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "publications" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:182:in 'HomeController#set_counts'
+  [1m[36mPatent Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "patents" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:183:in 'HomeController#set_counts'
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  [1m[36mFacility Load (0.3ms)[0m  [1m[34mSELECT "facilities".* FROM "facilities" LIMIT 10 /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:77
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" LIMIT 10 /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:95
+  Rendered home/index.html.erb within layouts/application (Duration: 9.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 10.7ms | GC: 0.0ms)
+Completed 200 OK in 41ms (Views: 11.6ms | ActiveRecord: 1.3ms (7 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/research_projects" for ::1 at 2026-08-27 18:27:55 +0200
+Processing by ResearchProjectsController#index as HTML
+Started GET "/people" for ::1 at 2026-08-27 18:27:56 +0200
+  Rendering layout layouts/application.html.erb
+  Rendering research_projects/index.html.erb within layouts/application
+  [1m[36mResearchProject Load (0.2ms)[0m  [1m[34mSELECT "research_projects".* FROM "research_projects" /*action='index',application='SciportModuleVisualisation',controller='research_projects'*/[0m
+  ↳ app/views/research_projects/index.html.erb:9
+  Rendered research_projects/index.html.erb within layouts/application (Duration: 7.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 10.2ms | GC: 0.0ms)
+Completed 200 OK in 43ms (Views: 15.9ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Processing by PeopleController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering people/index.html.erb within layouts/application
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" /*action='index',application='SciportModuleVisualisation',controller='people'*/[0m
+  ↳ app/views/people/index.html.erb:9
+  Rendered people/_person.html.erb (Duration: 0.2ms | GC: 0.0ms)
+  Rendered people/index.html.erb within layouts/application (Duration: 4.8ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 6.6ms | GC: 0.0ms)
+Completed 200 OK in 23ms (Views: 7.6ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/import_facilities" for ::1 at 2026-08-27 18:27:57 +0200
+Processing by HomeController#import_facilities as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]"}
+Completed 500 Internal Server Error in 19ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+LoadError (cannot load such file -- httparty):
+  
+app/services/sciport_api_service.rb:14:in '<main>'
+app/controllers/home_controller.rb:30:in 'HomeController#import_facilities'
+Started GET "/" for ::1 at 2026-08-27 19:21:01 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Processing by HomeController#index as HTML
+  [1m[36mFacility Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "facilities" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:179:in 'HomeController#set_counts'
+  [1m[36mPerson Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "people" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:180:in 'HomeController#set_counts'
+  [1m[36mResearchProject Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "research_projects" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:181:in 'HomeController#set_counts'
+  [1m[36mPublication Count (0.9ms)[0m  [1m[34mSELECT COUNT(*) FROM "publications" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:182:in 'HomeController#set_counts'
+  [1m[36mPatent Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "patents" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:183:in 'HomeController#set_counts'
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  [1m[36mFacility Load (0.2ms)[0m  [1m[34mSELECT "facilities".* FROM "facilities" LIMIT 10 /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:76:in '_app_views_home_index_html_erb___12929214_11280'
+  [1m[36mPerson Load (0.6ms)[0m  [1m[34mSELECT "people".* FROM "people" LIMIT 10 /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:94:in '_app_views_home_index_html_erb___12929214_11280'
+  Rendered home/index.html.erb within layouts/application (Duration: 201.8ms | Allocations: 11327)
+  Rendered layout layouts/application.html.erb (Duration: 250.6ms | Allocations: 14621)
+Completed 500 Internal Server Error in 1439ms (ActiveRecord: 10.6ms | Allocations: 60426)
+
+
+  
+ActionView::Template::Error (The asset "app.css" is not present in the asset pipeline.
+):
+    19:     <link rel="apple-touch-icon" href="/icon.png">
+    20: 
+    21:     <%# Includes all stylesheet files in app/assets/stylesheets %>
+    22:     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    23:     <%= javascript_importmap_tags %>
+    24:   </head>
+    25: 
+  
+app/views/layouts/application.html.erb:22:in '_app_views_layouts_application_html_erb__1023695911_11304'
+Started GET "/" for 127.0.0.1 at 2026-09-01 20:43:54 +0200
+Started GET "/" for 127.0.0.1 at 2026-09-01 20:43:54 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m
+Processing by HomeController#index as HTML
+Processing by HomeController#index as HTML
+  [1m[36mFacility Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "facilities" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:179:in 'HomeController#set_counts'
+  [1m[36mFacility Count (2.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "facilities" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:179:in 'HomeController#set_counts'
+  [1m[36mPerson Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "people" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:180:in 'HomeController#set_counts'
+  [1m[36mPerson Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "people" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:180:in 'HomeController#set_counts'
+  [1m[36mResearchProject Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "research_projects" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:181:in 'HomeController#set_counts'
+  [1m[36mResearchProject Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "research_projects" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:181:in 'HomeController#set_counts'
+  [1m[36mPublication Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "publications" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:182:in 'HomeController#set_counts'
+  [1m[36mPublication Count (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "publications" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:182:in 'HomeController#set_counts'
+  [1m[36mPatent Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "patents" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:183:in 'HomeController#set_counts'
+  [1m[36mPatent Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "patents" /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/controllers/home_controller.rb:183:in 'HomeController#set_counts'
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  [1m[36mFacility Load (0.2ms)[0m  [1m[34mSELECT "facilities".* FROM "facilities" LIMIT 10 /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:76:in '_app_views_home_index_html_erb___85275422_11304'
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" LIMIT 10 /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:94:in '_app_views_home_index_html_erb___85275422_11304'
+  [1m[36mFacility Load (0.2ms)[0m  [1m[34mSELECT "facilities".* FROM "facilities" LIMIT 10 /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:76:in '_app_views_home_index_html_erb___85275422_11304'
+  [1m[36mPerson Load (0.2ms)[0m  [1m[34mSELECT "people".* FROM "people" LIMIT 10 /*action='index',application='SciportModuleVisualisation',controller='home'*/[0m
+  ↳ app/views/home/index.html.erb:94:in '_app_views_home_index_html_erb___85275422_11304'
+  Rendered home/index.html.erb within layouts/application (Duration: 184.8ms | Allocations: 10186)
+  Rendered home/index.html.erb within layouts/application (Duration: 86.1ms | Allocations: 9561)
+  Rendered layout layouts/application.html.erb (Duration: 276.6ms | Allocations: 14278)
+Completed 500 Internal Server Error in 1908ms (ActiveRecord: 10.6ms | Allocations: 56507)
+
+
+  Rendered layout layouts/application.html.erb (Duration: 178.7ms | Allocations: 14210)
+Completed 500 Internal Server Error in 1909ms (ActiveRecord: 4.8ms | Allocations: 57826)
+
+
+  
+ActionView::Template::Error (The asset "app.css" is not present in the asset pipeline.
+):
+    19:     <link rel="apple-touch-icon" href="/icon.png">
+    20: 
+    21:     <%# Includes all stylesheet files in app/assets/stylesheets %>
+    22:     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    23:     <%= javascript_importmap_tags %>
+    24:   </head>
+    25: 
+  
+app/views/layouts/application.html.erb:22:in '_app_views_layouts_application_html_erb___591029903_11312'
+  
+ActionView::Template::Error (The asset "app.css" is not present in the asset pipeline.
+):
+    19:     <link rel="apple-touch-icon" href="/icon.png">
+    20: 
+    21:     <%# Includes all stylesheet files in app/assets/stylesheets %>
+    22:     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    23:     <%= javascript_importmap_tags %>
+    24:   </head>
+    25: 
+  
+app/views/layouts/application.html.erb:22:in '_app_views_layouts_application_html_erb___591029903_11312'
+Started GET "/favicon.ico" for ::1 at 2026-09-01 20:44:01 +0200
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='SciportModuleVisualisation'*/[0m

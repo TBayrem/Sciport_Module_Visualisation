@@ -1,0 +1,11 @@
+<% content_for :title, "New patent" %>
+
+<h1>New patent</h1>
+
+<%= render "form", patent: @patent %>
+
+<br>
+
+<div>
+  <%= link_to "Back to patents", patents_path %>
+</div>
