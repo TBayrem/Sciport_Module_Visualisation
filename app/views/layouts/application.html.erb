@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <%#
+      ============================================================
+      Datei: app/views/layouts/application.html.erb
+
+      Desc:
+      Gemeinsames HTML-Layout der Rails-Anwendung.
+
+      Das Layout bindet die benötigten Stylesheets
+      und JavaScript-Module ein und stellt den
+      Seiteninhalt der jeweiligen View dar.
+
+      Anwendungsfälle:
+      - Gemeinsames HTML-Grundgerüst bereitstellen
+      - Forschungsnetzwerk gestalten
+      - Rails Turbo und Importmap einbinden
+      ============================================================
+    %>
+
+    <%#
+      ------------------------------------------------------------
+      1. Allgemeine Metadaten
+
+      Legt die Zeichenkodierung und die Darstellung
+      auf mobilen Endgeräten fest.
+      ------------------------------------------------------------
+    %>
+
+    <meta charset="utf-8">
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    >
+
+    <title>SciPort – Forschungsvisualisierung</title>
+
+    <%#
+      ------------------------------------------------------------
+      2. Rails-Sicherheitsfunktionen
+
+      csrf_meta_tags unterstützt den Schutz
+      von Formularanfragen.
+
+      csp_meta_tag bindet die konfigurierte
+      Content Security Policy ein.
+      ------------------------------------------------------------
+    %>
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%#
+      ------------------------------------------------------------
+      3. Gemeinsames Stylesheet
+
+      Lädt das allgemeine CSS der Rails-Anwendung.
+      ------------------------------------------------------------
+    %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+    <%#
+      ------------------------------------------------------------
+      4. Stylesheet des Forschungsnetzwerks
+
+      network.css wird ausschließlich geladen,
+      wenn die Action network im Controller
+      VisualizationsController aufgerufen wird.
+      ------------------------------------------------------------
+    %>
+
+    <% if controller_name == "visualizations" && action_name == "network" %>
+      <%= stylesheet_link_tag "network", "data-turbo-track": "reload" %>
+    <% end %>
+
+    <%#
+      ------------------------------------------------------------
+      5. JavaScript über Rails Importmap
+
+      Lädt den zentralen Einstiegspunkt application.js.
+
+      Darüber werden Turbo, Stimulus und die
+      JavaScript-Module des Forschungsnetzwerks
+      eingebunden.
+      ------------------------------------------------------------
+    %>
+
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <%#
+      ------------------------------------------------------------
+      6. Seiteninhalt
+
+      yield fügt die jeweils aufgerufene View
+      in das gemeinsame Layout ein.
+
+      Aktuelle View:
+      - visualizations/network.html.erb
+      ------------------------------------------------------------
+    %>
+
+    <main>
+      <%= yield %>
+    </main>
+  </body>
+</html>

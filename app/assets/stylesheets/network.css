@@ -1,0 +1,459 @@
+
+/* ============================================================
+   Datei: network.css
+
+   Desc:
+   Definiert das Layout und die Gestaltung der
+   Forschungsnetzwerk-Seite.
+
+   Anwendungsfälle:
+   - Forschungsnetzwerk übersichtlich darstellen
+   - Filter und Navigation gestalten
+   - Netzwerk und Detailinformationen nebeneinander anzeigen
+   - Forschende und Einrichtungen visuell unterscheiden
+   - Responsive Darstellung ermöglichen
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1. Grundlayout der Netzwerkseite
+
+   Die Netzwerkseite verwendet eine begrenzte Seitenbreite,
+   damit die Inhalte auch auf großen Bildschirmen
+   übersichtlich bleiben.
+   ------------------------------------------------------------ */
+
+.network-page {
+  width: min(100% - 40px, 1500px);
+  margin: 0 auto;
+  padding: 32px 0 48px;
+  color: #1e293b;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* ------------------------------------------------------------
+   2. Kopfbereich und Navigation
+
+   Der Kopfbereich enthält den Seitentitel,
+   eine kurze Beschreibung und die Navigation
+   zwischen den beiden Visualisierungen.
+   ------------------------------------------------------------ */
+
+.network-page h1 {
+  margin: 0 0 12px;
+  color: #0f172a;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  line-height: 1.2;
+}
+
+.network-page h2 {
+  margin: 0 0 16px;
+  color: #0f172a;
+  font-size: 1.3rem;
+}
+
+.network-page h3 {
+  margin: 0 0 12px;
+  color: #0f172a;
+  font-size: 1.1rem;
+}
+
+.network-page h4 {
+  margin: 20px 0 10px;
+  color: #334155;
+  font-size: 1rem;
+}
+
+.network-page p {
+  line-height: 1.6;
+}
+
+.network-page nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0 28px;
+}
+
+.network-page nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1d4ed8;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.network-page nav a:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.network-page nav a[aria-current="page"] {
+  border-color: #2563eb;
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+
+/* ------------------------------------------------------------
+   3. Filterbereich
+
+   Die Filter werden in einer flexiblen Anordnung
+   dargestellt, damit sich die Eingabefelder
+   an unterschiedliche Bildschirmbreiten anpassen.
+   ------------------------------------------------------------ */
+
+.network-filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 16px;
+  margin: 24px 0;
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.network-filter-form label {
+  display: block;
+  margin-bottom: 7px;
+  color: #334155;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.network-filter-form input,
+.network-filter-form select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #0f172a;
+  font: inherit;
+}
+
+.network-filter-form input:focus,
+.network-filter-form select:focus {
+  border-color: #2563eb;
+  outline: 2px solid #bfdbfe;
+  outline-offset: 1px;
+}
+
+.network-filter-form input:disabled,
+.network-filter-form select:disabled {
+  background: #e2e8f0;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.network-filter-form button,
+.network-filter-form input[type="submit"] {
+  min-height: 42px;
+  padding: 10px 18px;
+  border: 1px solid #2563eb;
+  border-radius: 7px;
+  background: #2563eb;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.network-filter-form button:hover,
+.network-filter-form input[type="submit"]:hover {
+  background: #1d4ed8;
+}
+
+.network-filter-form a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 18px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #334155;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.network-filter-form a:hover {
+  background: #e2e8f0;
+}
+
+
+/* ------------------------------------------------------------
+   4. Hinweise und Ergebnisinformationen
+
+   Die Netzwerkseite informiert darüber,
+   wie viele Personen gefunden wurden und
+   ob die Ergebnismenge begrenzt wurde.
+   ------------------------------------------------------------ */
+
+.network-page .network-status,
+.network-page .network-notice,
+.network-page .network-info {
+  margin: 16px 0;
+  padding: 14px 18px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #334155;
+}
+
+.network-page .network-warning {
+  margin: 16px 0;
+  padding: 14px 18px;
+  border: 1px solid #fcd34d;
+  border-radius: 8px;
+  background: #fffbeb;
+  color: #92400e;
+}
+
+
+/* ------------------------------------------------------------
+   5. Hauptbereich mit Netzwerk und Detailansicht
+
+   Das Netzwerk erhält den größeren Teil
+   der verfügbaren Breite.
+
+   Die Detailansicht befindet sich rechts
+   neben der interaktiven Visualisierung.
+   ------------------------------------------------------------ */
+
+.network-content {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  align-items: stretch;
+  gap: 22px;
+  margin-top: 24px;
+}
+
+
+/* ------------------------------------------------------------
+   6. Interaktive Netzwerkvisualisierung
+
+   Der Container besitzt eine feste Mindesthöhe,
+   damit D3 ausreichend Platz für die Darstellung hat.
+
+   Die SVG-Grafik passt sich automatisch
+   an die verfügbare Breite an.
+   ------------------------------------------------------------ */
+
+.network-visualization {
+  position: relative;
+  width: 100%;
+  height: 650px;
+  min-height: 450px;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.network-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+.network-svg:active {
+  cursor: grabbing;
+}
+
+
+/* ------------------------------------------------------------
+   7. Gestaltung der Netzwerkverbindungen
+
+   Die Linien stellen institutionelle Zugehörigkeiten
+   zwischen Personen und Einrichtungen dar.
+
+   Eine gemeinsame Einrichtung ist kein Beleg
+   für eine wissenschaftliche Kooperation.
+   ------------------------------------------------------------ */
+
+.network-link {
+  stroke: #aebdca;
+  stroke-width: 1.5px;
+  stroke-opacity: 0.8;
+  pointer-events: none;
+}
+
+
+/* ------------------------------------------------------------
+   8. Gestaltung der Netzwerkknoten
+
+   Forschende werden blau dargestellt.
+   Wissenschaftliche Einrichtungen werden
+   orange dargestellt.
+
+   Beim Berühren mit dem Mauszeiger
+   wird die Sichtbarkeit des Knotens betont.
+   ------------------------------------------------------------ */
+
+.network-node {
+  transition:
+    opacity 0.15s ease,
+    stroke-width 0.15s ease;
+}
+
+.network-node-person {
+  fill: #2563eb;
+}
+
+.network-node-facility {
+  fill: #e58b32;
+}
+
+.network-node:hover {
+  stroke: #0f172a;
+  stroke-width: 2.5px;
+}
+
+
+/* ------------------------------------------------------------
+   9. Meldung bei fehlenden Netzwerkdaten
+
+   Wenn keine passenden Personen gefunden wurden,
+   erscheint eine Meldung innerhalb der SVG-Grafik.
+   ------------------------------------------------------------ */
+
+.network-empty-message {
+  fill: #64748b;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+
+/* ------------------------------------------------------------
+   10. Detailbereich
+
+   Der Detailbereich zeigt Informationen
+   zur ausgewählten Person oder Einrichtung.
+
+   Er besitzt einen eigenen Scrollbereich,
+   falls viele zugehörige Knoten vorhanden sind.
+   ------------------------------------------------------------ */
+
+.network-details,
+.network-detail-panel {
+  min-width: 0;
+  max-height: 650px;
+  padding: 22px;
+  overflow-y: auto;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.network-details-content {
+  overflow-wrap: anywhere;
+}
+
+.network-detail-title {
+  margin-bottom: 8px;
+  color: #0f172a;
+  font-size: 1.2rem;
+}
+
+.network-detail-type {
+  display: inline-block;
+  margin: 0 0 18px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.network-detail-subheading {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid #cbd5e1;
+}
+
+.network-detail-list {
+  margin: 12px 0 0;
+  padding-left: 22px;
+}
+
+.network-detail-list li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+
+/* ------------------------------------------------------------
+   11. Responsive Darstellung für Tablets
+
+   Auf schmaleren Bildschirmen werden
+   Netzwerk und Detailansicht untereinander
+   dargestellt.
+   ------------------------------------------------------------ */
+
+@media (max-width: 1000px) {
+  .network-content {
+    grid-template-columns: 1fr;
+  }
+
+  .network-visualization {
+    height: 550px;
+  }
+
+  .network-details,
+  .network-detail-panel {
+    max-height: none;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   12. Responsive Darstellung für Smartphones
+
+   Auf kleinen Bildschirmen werden Abstände,
+   Filter und Visualisierung angepasst.
+   ------------------------------------------------------------ */
+
+@media (max-width: 600px) {
+  .network-page {
+    width: min(100% - 24px, 1500px);
+    padding-top: 20px;
+  }
+
+  .network-filter-form {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+  }
+
+  .network-filter-form > * {
+    width: 100%;
+  }
+
+  .network-visualization {
+    height: 440px;
+    min-height: 350px;
+  }
+
+  .network-details,
+  .network-detail-panel {
+    padding: 16px;
+  }
+}

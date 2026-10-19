@@ -1,0 +1,331 @@
+
+<%# ============================================================
+    View: visualizations/network.html.erb
+
+    Desc:
+    Stellt die Benutzeroberfläche für das interaktive
+    Forschungsnetzwerk bereit.
+
+    Die Seite enthält Filtermöglichkeiten, den
+    Netzwerkgraphen und Informationen zu den
+    ausgewählten Forschenden und Einrichtungen.
+
+    Anwendungsfälle:
+    - Forschungsnetzwerk anzeigen
+    - Forschende nach Einrichtungen filtern
+    - Forschende anhand ihres Namens suchen
+    - Institutionelle Zugehörigkeiten darstellen
+    - Informationen zu Netzwerkknoten anzeigen
+    ============================================================ %>
+
+<div class="network-page">
+
+  <%# ----------------------------------------------------------
+      1. Seitenüberschrift und Navigation
+
+      Die Navigation verweist auf das Forschungsnetzwerk.
+      Die Themenvisualisierung ist vorübergehend entfernt.
+      ---------------------------------------------------------- %>
+
+  <header class="network-header">
+
+    <div>
+      <h1>Forschungsnetzwerk</h1>
+
+      <p>
+        Entdecken Sie Forschende, wissenschaftliche
+        Einrichtungen und ihre institutionellen
+        Zugehörigkeiten in SciPort.
+      </p>
+    </div>
+
+    <nav class="network-navigation"
+         aria-label="Visualisierungen">
+
+      <%= link_to "Netzwerk",
+                  network_path,
+                  class: "network-nav-link active" %>
+
+    </nav>
+
+  </header>
+
+
+  <%# ----------------------------------------------------------
+      2. Filterbereich
+
+      Forschende können nach ihrer Einrichtung und
+      anhand ihres Namens gefiltert werden.
+
+      Der Projektfilter bleibt deaktiviert, solange
+      die entsprechenden Forschungsprojektdaten
+      noch nicht vollständig importiert wurden.
+      ---------------------------------------------------------- %>
+
+  <section class="network-filters"
+           aria-labelledby="network-filter-heading">
+
+    <h2 id="network-filter-heading">
+      Netzwerk filtern
+    </h2>
+
+    <%# --------------------------------------------------------
+        2.1 Ausgewählte Einrichtung bestimmen
+
+        Die Einrichtungs-ID wird verwendet, um die
+        passende Einrichtung eindeutig zu identifizieren.
+        -------------------------------------------------------- %>
+
+    <%
+      selected_facility = @facilities.find do |facility_id, _facility_name|
+        facility_id.to_s == @selected_facility_id
+      end
+
+      selected_facility_name =
+        selected_facility ? selected_facility[1] : ""
+    %>
+
+
+    <%= form_with url: network_path,
+                  method: :get,
+                  local: true,
+                  data: { turbo: false },
+                  class: "network-filter-form" do %>
+
+      <%# ------------------------------------------------------
+          2.2 Einrichtungsfilter
+
+          Die Vorschlagsliste zeigt die Einrichtungen.
+          Das JavaScript überträgt bei der Auswahl
+          die zugehörige ID in das versteckte Feld.
+          ------------------------------------------------------ %>
+
+      <div class="network-filter-field">
+
+        <label for="network-facility-search">
+          Wissenschaftliche Einrichtung
+        </label>
+
+        <input
+          type="text"
+          id="network-facility-search"
+          class="network-filter-input"
+          list="network-facility-options"
+          value="<%= selected_facility_name %>"
+          placeholder="Einrichtung suchen"
+          autocomplete="off"
+        >
+
+        <datalist id="network-facility-options">
+          <% @facilities.each do |facility_id, facility_name| %>
+            <option
+              value="<%= facility_name %>"
+              data-facility-id="<%= facility_id %>">
+            </option>
+          <% end %>
+        </datalist>
+
+        <%= hidden_field_tag :facility_id,
+                             @selected_facility_id,
+                             id: "network-facility-id" %>
+
+      </div>
+
+
+      <%# ------------------------------------------------------
+          2.3 Personensuche
+
+          Der Controller sucht nach passenden Vor-
+          und Nachnamen der Forschenden.
+          ------------------------------------------------------ %>
+
+      <div class="network-filter-field">
+
+        <label for="network-person-search">
+          Forschende Person
+        </label>
+
+        <%= text_field_tag :q,
+                           @search_query,
+                           id: "network-person-search",
+                           class: "network-filter-input",
+                           placeholder: "Vor- oder Nachname" %>
+
+      </div>
+
+
+      <%# ------------------------------------------------------
+          2.4 Projektfilter
+
+          Dieser Filter wird erst aktiviert, wenn
+          reale Forschungsprojektdaten verfügbar sind.
+          ------------------------------------------------------ %>
+
+      <div class="network-filter-field">
+
+        <label for="network-project-filter">
+          Forschungsprojekt
+        </label>
+
+        <select
+          id="network-project-filter"
+          class="network-filter-input"
+          disabled>
+
+          <option>
+            Noch nicht verfügbar
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <%# ------------------------------------------------------
+          2.5 Filteraktionen
+
+          Die Filter können angewendet oder
+          vollständig zurückgesetzt werden.
+          ------------------------------------------------------ %>
+
+      <div class="network-filter-actions">
+
+        <%= submit_tag "Filter anwenden",
+                       class: "network-filter-button" %>
+
+        <%= link_to "Zurücksetzen",
+                    network_path,
+                    class: "network-reset-button" %>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+
+  <%# ----------------------------------------------------------
+      3. Informationen zum Netzwerk
+
+      Zeigt die Anzahl passender Forschender und
+      informiert über die maximale Anzahl angezeigter
+      Personen sowie die Bedeutung der Verbindungen.
+      ---------------------------------------------------------- %>
+
+  <section class="network-status"
+           aria-label="Netzwerkinformationen">
+
+    <p>
+      <strong><%= @total_people %></strong>
+      Forschende gefunden.
+    </p>
+
+    <% if @limited %>
+
+      <p class="network-limit-notice">
+        Es werden maximal
+        <%= VisualizationsController::MAX_PEOPLE %>
+        Forschende gleichzeitig angezeigt.
+        Verwenden Sie die Filter, um die Auswahl
+        einzugrenzen.
+      </p>
+
+    <% end %>
+
+    <p class="network-data-notice">
+      Die dargestellten Verbindungen zeigen
+      institutionelle Zugehörigkeiten.
+      Sie sind kein Nachweis einer wissenschaftlichen
+      Kooperation.
+    </p>
+
+  </section>
+
+
+  <%# ----------------------------------------------------------
+      4. Netzwerk und Detailinformationen
+
+      Der Hauptbereich besteht aus zwei Elementen:
+
+      - Interaktiver D3-Netzwerkgraph
+      - Informationen zum ausgewählten Knoten
+
+      Es wird kein Balkendiagramm verwendet.
+      ---------------------------------------------------------- %>
+
+  <main class="network-content">
+
+    <%# --------------------------------------------------------
+        4.1 Interaktiver Netzwerkgraph
+
+        Die vom Controller bereitgestellten Daten
+        werden als JSON im HTML gespeichert.
+
+        Das JavaScript liest diese Daten und
+        erzeugt daraus die D3-Visualisierung.
+        -------------------------------------------------------- %>
+
+    <section class="network-panel network-graph-panel"
+             aria-labelledby="network-graph-heading">
+
+      <div class="network-panel-header">
+
+        <h2 id="network-graph-heading">
+          Netzwerkvisualisierung
+        </h2>
+
+        <p>
+          Wählen Sie einen Knoten aus, um weitere
+          Informationen anzuzeigen.
+          Das Netzwerk kann gezoomt und verschoben werden.
+        </p>
+
+      </div>
+
+      <div
+        id="network-visualization"
+        class="network-visualization"
+        data-network-data="<%= json_escape(@network_data.to_json) %>"
+        role="group"
+        aria-label="Interaktives Netzwerk von Forschenden und Einrichtungen">
+      </div>
+
+    </section>
+
+
+    <%# --------------------------------------------------------
+        4.2 Detailinformationen
+
+        Beim Anklicken einer Person oder Einrichtung
+        werden die entsprechenden Informationen
+        durch das JavaScript in diesem Bereich angezeigt.
+        -------------------------------------------------------- %>
+
+    <aside class="network-panel network-details-panel"
+           aria-labelledby="network-details-heading">
+
+      <div class="network-panel-header">
+
+        <h2 id="network-details-heading">
+          Informationen
+        </h2>
+
+      </div>
+
+      <div id="network-details-content"
+           class="network-details-content"
+           aria-live="polite">
+
+        <p>
+          Klicken Sie auf eine Person oder Einrichtung
+          im Netzwerk, um die zugehörigen Informationen
+          anzuzeigen.
+        </p>
+
+      </div>
+
+    </aside>
+
+  </main>
+
+</div>

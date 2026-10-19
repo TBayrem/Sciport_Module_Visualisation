@@ -1,0 +1,187 @@
+
+# ============================================================
+# Datei: config/database.yml
+#
+# Desc:
+# Konfiguriert die Verbindung zwischen der Rails-Anwendung
+# und dem PostgreSQL-Datenbankserver.
+#
+# Das PostgreSQL-Passwort wird nicht in dieser Datei gespeichert.
+# Stattdessen liest Rails das Passwort aus der Umgebungsvariable
+# POSTGRES_PASSWORD.
+#
+# Anwendungsfälle:
+# - Sichere Verbindung zur PostgreSQL-Datenbank herstellen
+# - Bestehende Entwicklungsdatenbank verwenden
+# - Entwicklungs- und Testdatenbanken getrennt verwalten
+# - Produktionsdatenbanken konfigurieren
+# - Passwörter außerhalb des Quellcodes halten
+# ============================================================
+
+
+# ------------------------------------------------------------
+# 1. Allgemeine Datenbankkonfiguration
+#
+# Diese Einstellungen werden von den nachfolgenden
+# Datenbankumgebungen übernommen.
+#
+# Der Verbindungsadapter ist PostgreSQL.
+#
+# Die Zeichenkodierung Unicode ermöglicht die Verarbeitung
+# internationaler Zeichen.
+#
+# Die Anzahl der Datenbankverbindungen wird über
+# RAILS_MAX_THREADS gesteuert. Standardmäßig sind
+# fünf Verbindungen vorgesehen.
+# ------------------------------------------------------------
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+  # ----------------------------------------------------------
+  # 1.1 PostgreSQL-Server
+  #
+  # localhost bezeichnet den lokalen Computer.
+  #
+  # Port 5432 ist der Standardport von PostgreSQL.
+  # ----------------------------------------------------------
+
+  host: localhost
+  port: 5432
+
+  # ----------------------------------------------------------
+  # 1.2 Datenbankbenutzer
+  #
+  # Die lokale PostgreSQL-Installation verwendet
+  # den Benutzer postgres.
+  # ----------------------------------------------------------
+
+  username: postgres
+
+  # ----------------------------------------------------------
+  # 1.3 Sichere Passwortverwaltung
+  #
+  # Das Passwort wird ausschließlich aus der
+  # Umgebungsvariable POSTGRES_PASSWORD gelesen.
+  #
+  # Diese Variable wird vor dem Start von Rails
+  # in PowerShell gesetzt.
+  #
+  # Das Passwort selbst steht nicht im Quellcode.
+  # ----------------------------------------------------------
+
+  password: <%= ENV["POSTGRES_PASSWORD"] %>
+
+
+# ------------------------------------------------------------
+# 2. Entwicklungsumgebung
+#
+# Diese Umgebung wird beim lokalen Entwickeln verwendet.
+#
+# Die bereits vorhandene Entwicklungsdatenbank
+# sciport_visualization_development bleibt bestehen.
+#
+# Die Datenbank wird durch diese Konfiguration
+# weder gelöscht noch neu erstellt.
+# ------------------------------------------------------------
+
+development:
+  <<: *default
+
+  database: sciport_visualization_development
+
+
+# ------------------------------------------------------------
+# 3. Testumgebung
+#
+# Rails verwendet für automatisierte Tests
+# eine separate PostgreSQL-Datenbank.
+#
+# Dadurch bleiben die Daten der Entwicklungsumgebung
+# von Testoperationen getrennt.
+# ------------------------------------------------------------
+
+test:
+  <<: *default
+
+  database: sciport_visualization_test
+
+
+# ------------------------------------------------------------
+# 4. Produktionsumgebung
+#
+# Die Produktionsumgebung verwendet einen separaten
+# Datenbankbenutzer und ein eigenes Passwort.
+#
+# Das Produktionspasswort wird ebenfalls über
+# eine Umgebungsvariable bereitgestellt.
+#
+# Die bestehenden Datenbanknamen und Konfigurationen
+# für Cache, Queue und Cable bleiben erhalten.
+# ------------------------------------------------------------
+
+production:
+
+  # ----------------------------------------------------------
+  # 4.1 Hauptdatenbank
+  #
+  # Speichert die eigentlichen Anwendungsdaten
+  # der Produktionsumgebung.
+  # ----------------------------------------------------------
+
+  primary: &primary_production
+    <<: *default
+
+    database: sciport_visualization_production
+
+    username: sciport_visualization
+
+    password: <%= ENV["SCIPORT_VISUALIZATION_DATABASE_PASSWORD"] %>
+
+
+  # ----------------------------------------------------------
+  # 4.2 Cache-Datenbank
+  #
+  # Wird für die persistente Zwischenspeicherung
+  # von Anwendungsdaten verwendet.
+  # ----------------------------------------------------------
+
+  cache:
+    <<: *primary_production
+
+    database: sciport_visualization_production_cache
+
+    migrations_paths: db/cache_migrate
+
+
+  # ----------------------------------------------------------
+  # 4.3 Queue-Datenbank
+  #
+  # Wird für die Verwaltung von Hintergrundaufgaben
+  # verwendet.
+  # ----------------------------------------------------------
+
+  queue:
+    <<: *primary_production
+
+    database: sciport_visualization_production_queue
+
+    migrations_paths: db/queue_migrate
+
+
+  # ----------------------------------------------------------
+  # 4.4 Cable-Datenbank
+  #
+  # Wird für die Datenbankunterstützung
+  # von Action Cable verwendet.
+  # ----------------------------------------------------------
+
+  cable:
+    <<: *primary_production
+
+    database: sciport_visualization_production_cable
+
+    migrations_paths: db/cable_migrate
