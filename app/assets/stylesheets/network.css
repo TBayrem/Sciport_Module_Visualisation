@@ -1,27 +1,48 @@
 
 /* ============================================================
-   Datei: network.css
+   Datei: app/assets/stylesheets/network.css
 
    Desc:
    Definiert das Layout und die Gestaltung der
-   Forschungsnetzwerk-Seite.
+   Forschungsnetzwerk-Seite von SciPort.
 
-   Anwendungsfälle:
-   - Forschungsnetzwerk übersichtlich darstellen
-   - Filter und Navigation gestalten
-   - Netzwerk und Detailinformationen nebeneinander anzeigen
-   - Forschende und Einrichtungen visuell unterscheiden
-   - Responsive Darstellung ermöglichen
+   Die CSS-Datei enthält:
+
+   - Grundlayout der Netzwerkseite
+   - Kopfbereich und Navigation
+   - Filterbereich
+   - Ergebnisinformationen und Hinweise
+   - Zweispaltiges Layout
+   - Interaktive D3-Netzwerkvisualisierung
+   - Netzwerkverbindungen
+   - Personen- und Einrichtungsknoten
+   - Tooltip-Darstellung
+   - Detailinformationen
+   - Hierarchische Einrichtungspfade
+   - Responsive Darstellung
+
+   Besonderheit:
+   Im Netzwerk erscheinen ausschließlich
+   Forschende und Haupteinrichtungen als Knoten.
+
+   Untereinrichtungen werden als hierarchische
+   Listen in den Tooltips und im Detailbereich
+   dargestellt.
+
+   Die ursprünglichen Farben bleiben erhalten:
+
+   Personen: Blau
+   Einrichtungen: Orange
    ============================================================ */
 
 
-/* ------------------------------------------------------------
+/* ============================================================
    1. Grundlayout der Netzwerkseite
 
    Die Netzwerkseite verwendet eine begrenzte Seitenbreite,
    damit die Inhalte auch auf großen Bildschirmen
    übersichtlich bleiben.
-   ------------------------------------------------------------ */
+   ============================================================ */
 
 .network-page {
   width: min(100% - 40px, 1500px);
@@ -31,14 +52,23 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Alle Elemente innerhalb der Netzwerkseite
+   verwenden eine einheitliche Größenberechnung. */
 
-/* ------------------------------------------------------------
+.network-page,
+.network-page * {
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
    2. Kopfbereich und Navigation
 
-   Der Kopfbereich enthält den Seitentitel,
-   eine kurze Beschreibung und die Navigation
-   zwischen den beiden Visualisierungen.
-   ------------------------------------------------------------ */
+   Der Kopfbereich enthält:
+   - Seitentitel
+   - Beschreibung
+   - Navigation zur Netzwerkvisualisierung
+   ============================================================ */
 
 .network-page h1 {
   margin: 0 0 12px;
@@ -69,6 +99,24 @@
   line-height: 1.6;
 }
 
+/* Die Kopfzeile erhält einen Abstand
+   zum nachfolgenden Filterbereich. */
+
+.network-header {
+  margin-bottom: 24px;
+}
+
+.network-header-content {
+  max-width: 900px;
+}
+
+.network-header-content p {
+  margin: 0;
+  color: #475569;
+}
+
+/* Navigation der Visualisierungen. */
+
 .network-page nav {
   display: flex;
   flex-wrap: wrap;
@@ -97,20 +145,33 @@
   background: #eff6ff;
 }
 
-.network-page nav a[aria-current="page"] {
+/* Der aktive Navigationspunkt wird
+   durch aria-current gekennzeichnet. */
+
+.network-page nav a[aria-current="page"],
+.network-page nav a.active {
   border-color: #2563eb;
   background: #dbeafe;
   color: #1e40af;
 }
 
 
-/* ------------------------------------------------------------
+/* ============================================================
    3. Filterbereich
 
    Die Filter werden in einer flexiblen Anordnung
    dargestellt, damit sich die Eingabefelder
    an unterschiedliche Bildschirmbreiten anpassen.
-   ------------------------------------------------------------ */
+
+   Filter:
+   - Wissenschaftliche Einrichtung
+   - Forschende Person
+   - Forschungsprojekt (deaktiviert)
+   ============================================================ */
+
+.network-filters {
+  margin-top: 24px;
+}
 
 .network-filter-form {
   display: flex;
@@ -122,6 +183,14 @@
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   background: #f8fafc;
+}
+
+/* Jedes Filterfeld erhält eine Mindestbreite,
+   damit die Eingabefelder gut bedienbar bleiben. */
+
+.network-filter-field {
+  flex: 1 1 220px;
+  min-width: 0;
 }
 
 .network-filter-form label {
@@ -145,6 +214,15 @@
   font: inherit;
 }
 
+/* Das versteckte Feld darf keinen Platz
+   innerhalb des Filterlayouts belegen. */
+
+.network-filter-form input[type="hidden"] {
+  display: none;
+}
+
+/* Sichtbare Hervorhebung beim Fokussieren. */
+
 .network-filter-form input:focus,
 .network-filter-form select:focus {
   border-color: #2563eb;
@@ -152,11 +230,30 @@
   outline-offset: 1px;
 }
 
+/* Deaktivierte Filter erhalten
+   eine graue Darstellung. */
+
 .network-filter-form input:disabled,
 .network-filter-form select:disabled {
   background: #e2e8f0;
   color: #64748b;
   cursor: not-allowed;
+}
+
+
+/* ============================================================
+   4. Filteraktionen
+
+   Die Aktionen bestehen aus:
+   - Filter anwenden
+   - Zurücksetzen
+   ============================================================ */
+
+.network-filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
 }
 
 .network-filter-form button,
@@ -197,13 +294,15 @@
 }
 
 
-/* ------------------------------------------------------------
-   4. Hinweise und Ergebnisinformationen
+/* ============================================================
+   5. Hinweise und Ergebnisinformationen
 
-   Die Netzwerkseite informiert darüber,
-   wie viele Personen gefunden wurden und
-   ob die Ergebnismenge begrenzt wurde.
-   ------------------------------------------------------------ */
+   Die Netzwerkseite informiert darüber:
+   - Wie viele Forschende gefunden wurden
+   - Ob die Ergebnismenge begrenzt wurde
+   - Welche Bedeutung die Verbindungen besitzen
+   - Wie die Einrichtungshierarchie dargestellt wird
+   ============================================================ */
 
 .network-page .network-status,
 .network-page .network-notice,
@@ -225,35 +324,110 @@
   color: #92400e;
 }
 
+/* Abstand zwischen den einzelnen Hinweisen. */
 
-/* ------------------------------------------------------------
-   5. Hauptbereich mit Netzwerk und Detailansicht
+.network-status p {
+  margin: 8px 0;
+}
+
+.network-result-count strong {
+  color: #0f172a;
+  font-size: 1.05rem;
+}
+
+/* Hinweis auf die maximale Anzahl
+   angezeigter Forschender. */
+
+.network-limit-notice {
+  color: #92400e;
+}
+
+/* Wissenschaftliche Einordnung
+   der institutionellen Verbindungen. */
+
+.network-data-notice {
+  color: #475569;
+  font-size: 0.92rem;
+}
+
+/* Erläuterung der Einrichtungshierarchie. */
+
+.network-hierarchy-notice {
+  color: #475569;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+
+/* ============================================================
+   6. Hauptbereich mit Netzwerk und Detailansicht
 
    Das Netzwerk erhält den größeren Teil
    der verfügbaren Breite.
 
    Die Detailansicht befindet sich rechts
    neben der interaktiven Visualisierung.
-   ------------------------------------------------------------ */
+
+   Auf kleineren Bildschirmen werden die Bereiche
+   untereinander dargestellt.
+   ============================================================ */
 
 .network-content {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  grid-template-columns:
+    minmax(0, 2fr)
+    minmax(280px, 1fr);
   align-items: stretch;
   gap: 22px;
   margin-top: 24px;
 }
 
+/* Beide Bereiche erhalten eine gemeinsame
+   Gestaltung als Panel. */
 
-/* ------------------------------------------------------------
-   6. Interaktive Netzwerkvisualisierung
+.network-panel {
+  min-width: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+}
 
-   Der Container besitzt eine feste Mindesthöhe,
+/* Panelüberschriften und Bedienungshinweise. */
+
+.network-panel-header {
+  padding: 20px 20px 14px;
+}
+
+.network-panel-header h2 {
+  margin-bottom: 10px;
+}
+
+.network-panel-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+
+/* ============================================================
+   7. Interaktive Netzwerkvisualisierung
+
+   Der Netzwerkcontainer besitzt eine feste Höhe,
    damit D3 ausreichend Platz für die Darstellung hat.
 
    Die SVG-Grafik passt sich automatisch
    an die verfügbare Breite an.
-   ------------------------------------------------------------ */
+
+   Der Container ist position: relative,
+   damit der Tooltip innerhalb des Netzwerks
+   absolut positioniert werden kann.
+   ============================================================ */
+
+.network-graph-panel {
+  min-width: 0;
+  overflow: hidden;
+}
 
 .network-visualization {
   position: relative;
@@ -266,6 +440,9 @@
   background: #ffffff;
 }
 
+/* Die SVG-Zeichenfläche füllt
+   den gesamten Netzwerkcontainer aus. */
+
 .network-svg {
   display: block;
   width: 100%;
@@ -273,20 +450,23 @@
   cursor: grab;
 }
 
+/* Während des Verschiebens
+   verändert sich der Mauszeiger. */
+
 .network-svg:active {
   cursor: grabbing;
 }
 
 
-/* ------------------------------------------------------------
-   7. Gestaltung der Netzwerkverbindungen
+/* ============================================================
+   8. Gestaltung der Netzwerkverbindungen
 
    Die Linien stellen institutionelle Zugehörigkeiten
-   zwischen Personen und Einrichtungen dar.
+   zwischen Personen und Haupteinrichtungen dar.
 
    Eine gemeinsame Einrichtung ist kein Beleg
    für eine wissenschaftliche Kooperation.
-   ------------------------------------------------------------ */
+   ============================================================ */
 
 .network-link {
   stroke: #aebdca;
@@ -295,17 +475,25 @@
   pointer-events: none;
 }
 
+/* Die ausgewählte Verbindung wird
+   durch Network.js hervorgehoben.
 
-/* ------------------------------------------------------------
-   8. Gestaltung der Netzwerkknoten
+   Die entsprechende Strichstärke und Deckkraft
+   werden direkt über D3 aktualisiert. */
+
+
+/* ============================================================
+   9. Gestaltung der Netzwerkknoten
 
    Forschende werden blau dargestellt.
-   Wissenschaftliche Einrichtungen werden
-   orange dargestellt.
+
+   Haupteinrichtungen werden orange dargestellt.
+
+   Untereinrichtungen besitzen keine eigenen Knoten.
 
    Beim Berühren mit dem Mauszeiger
    wird die Sichtbarkeit des Knotens betont.
-   ------------------------------------------------------------ */
+   ============================================================ */
 
 .network-node {
   transition:
@@ -313,26 +501,40 @@
     stroke-width 0.15s ease;
 }
 
+/* Forschende Personen. */
+
 .network-node-person {
   fill: #2563eb;
 }
 
+/* Wissenschaftliche Haupteinrichtungen. */
+
 .network-node-facility {
   fill: #e58b32;
 }
+
+/* Hervorhebung beim Hover. */
 
 .network-node:hover {
   stroke: #0f172a;
   stroke-width: 2.5px;
 }
 
+/* Sichtbarer Fokus für Tastaturbedienung. */
 
-/* ------------------------------------------------------------
-   9. Meldung bei fehlenden Netzwerkdaten
+.network-node:focus-visible {
+  stroke: #0f172a;
+  stroke-width: 3px;
+  outline: none;
+}
+
+
+/* ============================================================
+   10. Meldung bei fehlenden Netzwerkdaten
 
    Wenn keine passenden Personen gefunden wurden,
    erscheint eine Meldung innerhalb der SVG-Grafik.
-   ------------------------------------------------------------ */
+   ============================================================ */
 
 .network-empty-message {
   fill: #64748b;
@@ -341,18 +543,69 @@
 }
 
 
-/* ------------------------------------------------------------
-   10. Detailbereich
+/* ============================================================
+   11. Tooltip
+
+   Der Tooltip wird durch Network.js erstellt.
+
+   Er zeigt:
+   - Name des Knotens
+   - Knotentyp
+   - Akademischen Titel bei Personen
+   - Institutionelle Zugehörigkeitspfade
+   - Vollständige Einrichtungshierarchie
+
+   Die Position und einige grundlegende Styles
+   werden direkt in Network.js gesetzt.
+
+   Die folgenden Regeln ergänzen diese Darstellung.
+   ============================================================ */
+
+.network-tooltip {
+  box-sizing: border-box;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  color: #1e293b;
+  line-height: 1.5;
+}
+
+/* Inhalte innerhalb des Tooltips
+   sollen bei langen Namen umbrechen. */
+
+.network-tooltip div {
+  overflow-wrap: anywhere;
+}
+
+/* Der Tooltip darf Mausereignisse nicht abfangen,
+   damit Hover und Dragging weiterhin funktionieren. */
+
+.network-tooltip {
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   12. Detailbereich
 
    Der Detailbereich zeigt Informationen
-   zur ausgewählten Person oder Einrichtung.
+   zur ausgewählten Person oder Haupteinrichtung.
 
    Er besitzt einen eigenen Scrollbereich,
-   falls viele zugehörige Knoten vorhanden sind.
-   ------------------------------------------------------------ */
+   falls viele Zugehörigkeiten oder Untereinrichtungen
+   vorhanden sind.
+
+   Die bisherigen Klassen bleiben erhalten:
+   - network-details
+   - network-detail-panel
+
+   Zusätzlich wird die in der aktuellen HTML-Datei
+   verwendete Klasse unterstützt:
+   - network-details-panel
+   ============================================================ */
 
 .network-details,
-.network-detail-panel {
+.network-detail-panel,
+.network-details-panel {
   min-width: 0;
   max-height: 650px;
   padding: 22px;
@@ -362,15 +615,24 @@
   background: #f8fafc;
 }
 
+/* Der Detailbereich wird nicht durch
+   lange Einrichtungsnamen verbreitert. */
+
 .network-details-content {
+  min-width: 0;
   overflow-wrap: anywhere;
 }
+
+/* Überschrift des ausgewählten Knotens. */
 
 .network-detail-title {
   margin-bottom: 8px;
   color: #0f172a;
   font-size: 1.2rem;
+  overflow-wrap: anywhere;
 }
+
+/* Kennzeichnung des Knotentyps. */
 
 .network-detail-type {
   display: inline-block;
@@ -383,11 +645,28 @@
   font-weight: 600;
 }
 
+/* Abschnittsüberschriften innerhalb
+   der Detailinformationen. */
+
 .network-detail-subheading {
   margin-top: 22px;
   padding-top: 16px;
   border-top: 1px solid #cbd5e1;
 }
+
+/* Kennzeichnung einzelner Zugehörigkeitspfade,
+   wenn eine Person mehreren Einrichtungen
+   zugeordnet ist. */
+
+.network-detail-path-heading {
+  margin: 16px 0 8px;
+  color: #334155;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Listen mit verbundenen Personen
+   oder Haupteinrichtungen. */
 
 .network-detail-list {
   margin: 12px 0 0;
@@ -397,18 +676,125 @@
 .network-detail-list li {
   margin-bottom: 10px;
   line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 
-/* ------------------------------------------------------------
-   11. Responsive Darstellung für Tablets
+/* ============================================================
+   13. Hierarchische Einrichtungspfade
+
+   Die Hierarchien werden von main.js als
+   verschachtelte HTML-Listen erstellt.
+
+   Beispiel:
+
+   Universität
+     Fachbereich
+       Institut
+         Arbeitsgruppe
+
+   Jede Ebene wird eingerückt.
+
+   Eine vertikale Linie verdeutlicht die
+   organisatorische Unterordnung.
+
+   Diese Styles werden sowohl für die
+   Hierarchie einer Haupteinrichtung als auch
+   für die Zugehörigkeitspfade von Personen genutzt.
+   ============================================================ */
+
+/* Äußere Hierarchieliste. */
+
+.network-hierarchy-list {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+}
+
+/* Verschachtelte Listen erhalten
+   eine zusätzliche Einrückung. */
+
+.network-hierarchy-list .network-hierarchy-list {
+  margin: 6px 0 6px 8px;
+  padding-left: 16px;
+  border-left: 2px solid #cbd5e1;
+}
+
+/* Einzelne Einrichtung innerhalb der Hierarchie. */
+
+.network-hierarchy-item {
+  margin: 6px 0;
+  padding: 2px 0;
+  line-height: 1.5;
+}
+
+/* Name einer Einrichtung. */
+
+.network-hierarchy-name {
+  display: inline-block;
+  color: #334155;
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+}
+
+/* Die oberste Einrichtung wird etwas
+   stärker hervorgehoben. */
+
+.network-hierarchy-list > .network-hierarchy-item
+  > .network-hierarchy-name {
+  font-weight: 600;
+}
+
+/* Untereinrichtungen werden normalgewichtig
+   dargestellt, damit die Hierarchie erkennbar bleibt. */
+
+.network-hierarchy-list .network-hierarchy-list
+  .network-hierarchy-name {
+  font-weight: 400;
+}
+
+
+/* ============================================================
+   14. Lange Einrichtungshierarchien
+
+   Umfangreiche Hierarchien sollen im rechten
+   Informationsbereich lesbar bleiben.
+
+   Die Listen dürfen keine horizontale
+   Scrollleiste erzwingen.
+   ============================================================ */
+
+.network-details-content .network-hierarchy-list {
+  max-width: 100%;
+}
+
+.network-details-content .network-hierarchy-item {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Auch bei sehr langen Namen wird
+   innerhalb der verfügbaren Breite umgebrochen. */
+
+.network-details-content .network-hierarchy-name {
+  max-width: 100%;
+  white-space: normal;
+}
+
+
+/* ============================================================
+   15. Responsive Darstellung für Tablets
 
    Auf schmaleren Bildschirmen werden
    Netzwerk und Detailansicht untereinander
    dargestellt.
-   ------------------------------------------------------------ */
+
+   Die Netzwerkvisualisierung erhält
+   eine etwas geringere Höhe.
+   ============================================================ */
 
 @media (max-width: 1000px) {
+
   .network-content {
     grid-template-columns: 1fr;
   }
@@ -418,24 +804,40 @@
   }
 
   .network-details,
-  .network-detail-panel {
+  .network-detail-panel,
+  .network-details-panel {
     max-height: none;
+  }
+
+  /* Der Detailbereich erhält die gesamte Breite. */
+
+  .network-details-panel {
+    width: 100%;
   }
 }
 
 
-/* ------------------------------------------------------------
-   12. Responsive Darstellung für Smartphones
+/* ============================================================
+   16. Responsive Darstellung für Smartphones
 
-   Auf kleinen Bildschirmen werden Abstände,
-   Filter und Visualisierung angepasst.
-   ------------------------------------------------------------ */
+   Auf kleinen Bildschirmen werden:
+   - Seitenabstände reduziert
+   - Filter untereinander dargestellt
+   - Netzwerkhöhe angepasst
+   - Detailinformationen kompakter angezeigt
+   - Hierarchien platzsparender eingerückt
+   ============================================================ */
 
 @media (max-width: 600px) {
+
+  /* Seitenbreite und Abstände. */
+
   .network-page {
     width: min(100% - 24px, 1500px);
     padding-top: 20px;
   }
+
+  /* Filter untereinander anordnen. */
 
   .network-filter-form {
     flex-direction: column;
@@ -447,13 +849,103 @@
     width: 100%;
   }
 
+  .network-filter-field {
+    flex: 1 1 auto;
+  }
+
+  /* Filteraktionen auf kleinen Bildschirmen
+     untereinander anordnen. */
+
+  .network-filter-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .network-filter-actions input[type="submit"],
+  .network-filter-actions a {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Netzwerkhöhe reduzieren. */
+
   .network-visualization {
     height: 440px;
     min-height: 350px;
   }
 
+  /* Panelabstände reduzieren. */
+
+  .network-panel-header {
+    padding: 16px 16px 12px;
+  }
+
   .network-details,
-  .network-detail-panel {
+  .network-detail-panel,
+  .network-details-panel {
     padding: 16px;
   }
+
+  /* Hierarchieeinrückung auf kleinen
+     Bildschirmen etwas reduzieren. */
+
+  .network-hierarchy-list .network-hierarchy-list {
+    margin-left: 5px;
+    padding-left: 11px;
+  }
+
+  .network-hierarchy-name {
+    font-size: 0.88rem;
+  }
+
+  /* Detailüberschriften kompakter darstellen. */
+
+  .network-detail-title {
+    font-size: 1.1rem;
+  }
+
+  .network-detail-subheading {
+    margin-top: 18px;
+  }
 }
+
+
+/* ============================================================
+   17. Reduzierte Animationen
+
+   Wenn Benutzer in ihrem Betriebssystem
+   reduzierte Animationen bevorzugen,
+   werden CSS-Übergänge deaktiviert.
+
+   Die D3-Simulation wird hiervon nicht
+   automatisch beeinflusst.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .network-page nav a,
+  .network-filter-form button,
+  .network-filter-form input[type="submit"],
+  .network-node {
+    transition: none;
+  }
+}
+
+
+/* ============================================================
+   Ende: app/assets/stylesheets/network.css
+
+   Die CSS-Datei unterstützt:
+
+   - Forschende als blaue Knoten
+   - Haupteinrichtungen als orange Knoten
+   - Institutionelle Verbindungen
+   - Tooltips
+   - Vollständige Einrichtungshierarchien
+   - Mehrere Zugehörigkeitspfade
+   - Detailinformationen
+   - Filter und Navigation
+   - Responsive Darstellung
+
+   ============================================================ */

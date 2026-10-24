@@ -49,7 +49,7 @@ default: &default
   # Port 5432 ist der Standardport von PostgreSQL.
   # ----------------------------------------------------------
 
-  host: localhost
+  host: 127.0.0.1
   port: 5432
 
   # ----------------------------------------------------------
