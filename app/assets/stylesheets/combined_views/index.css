@@ -1,0 +1,101 @@
+/* ============================================================
+   Datei: app/assets/stylesheets/combined_views/index.css
+   Gehört zu: app/views/combined_views/index.html.erb
+
+   Desc:
+     Raster der kombinierten Ansicht (FA30):
+
+       ┌──────────────┬──────────────┬──────────┐
+       │ Netzwerk     │ Themenkarte  │ Info-    │
+       │              │              │ bereich  │
+       ├──────────────┼──────────────┤          │
+       │ Balken       │ Themen       │          │
+       └──────────────┴──────────────┴──────────┘
+
+     Darüber Suche und Schwellenwert-Regler. Die beiden
+     Grafiken teilen sich die freie Höhe; Balkendiagramm und
+     Themenkarten haben eine feste Höhe und scrollen in sich.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Raster
+   ------------------------------------------------------------ */
+
+.combined-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 260px;
+  grid-template-rows: minmax(0, 1fr) 190px;
+  grid-template-areas:
+    "network topic  detail"
+    "bars    topics detail";
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+
+.network-cell { grid-area: network; }
+.topic-cell   { grid-area: topic; }
+.bar-cell     { grid-area: bars; }
+.topics-cell  { grid-area: topics; }
+
+.combined-layout .detail { grid-area: detail; }
+
+/* Balken und Themen scrollen innerhalb ihrer Zelle; die
+   Vorgaben der anderen Seiten (max-height, margin) gelten
+   hier nicht. */
+.combined-layout .bar-panel,
+.combined-layout .topics-panel {
+  max-height: none;
+  margin-top: 0;
+  overflow-y: auto;
+}
+
+/* Themenkarten schmaler, damit sie in die halbe Breite passen */
+.combined-layout .topic-cards {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+/* ------------------------------------------------------------
+   Schwellenwert-Regler
+   ------------------------------------------------------------ */
+
+.similarity-bar {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin: 10px 0;
+  padding: 8px 12px;
+}
+
+.similarity-bar label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.similarity-bar input[type="range"] {
+  width: 220px;
+  border: 0;
+}
+
+.similarity-bar output {
+  min-width: 34px;
+  font-weight: 600;
+}
+
+/* Anzahl der Kanten in der Farbe der Ähnlichkeitskanten */
+.similarity-bar .count {
+  padding: 2px 8px;
+  font-size: 12px;
+  color: var(--link-similarity);
+  background: #e6f4f1;
+  border-radius: 999px;
+}
+
+.similarity-bar .hint { flex-basis: 100%; }
+
+/* Niedrige Fenster: Mindesthöhe für die Grafiken. */
+@media (max-height: 760px) {
+  .combined-layout { min-height: 560px; }
+}

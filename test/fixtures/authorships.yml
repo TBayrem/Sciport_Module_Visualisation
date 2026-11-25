@@ -1,13 +1,18 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  person: one
-  publication: one
+# ============================================================
+# Datei: test/fixtures/authorships.yml
+#
+# Autorenliste der Publikation (ohne Verweis auf people).
+# ============================================================
+pub_graph_1:
+  publication: pub_graph
+  first_name: Anna
+  last_name: Albrecht
   position: 1
-  role: MyString
+  role: Autorin
 
-two:
-  person: two
-  publication: two
-  position: 1
-  role: MyString
+pub_graph_2:
+  publication: pub_graph
+  first_name: Max
+  last_name: Extern
+  position: 2
+  role: Autor

@@ -21,7 +21,8 @@ module SciportVisualization
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-    # config.time_zone = "Central Time (US & Canada)"
+    # Zeitzone für die Anzeige von Zeitpunkten (z. B. Datenstand im Footer).
+    config.time_zone = "Berlin"
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end

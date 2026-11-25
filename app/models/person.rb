@@ -7,6 +7,9 @@
 # Zugehörigkeiten sowie die Beziehungen zu Forschungsprojekten
 # und wissenschaftlichen Publikationen.
 #
+# Namen aus Autorenlisten von Publikationen sind keine
+# Personen, sondern Authorship-Einträge.
+#
 # Anwendungsfälle:
 # - Forschende im Netzwerk darstellen
 # - Forschende nach Namen suchen
@@ -22,11 +25,14 @@ class Person < ApplicationRecord
   # verbindet die Person mit einer Einrichtung. Dadurch
   # können institutionelle Zugehörigkeiten im Netzwerk
   # dargestellt und nach Einrichtungen gefiltert werden.
+  #
+  # distinct verhindert doppelte Einrichtungen, wenn eine
+  # Person in derselben Einrichtung mehrere Rollen hat.
   # ----------------------------------------------------------
 
-  has_many :roles, dependent: :destroy
+  has_many :roles, dependent: :destroy, inverse_of: :person
 
-  has_many :facilities, through: :roles
+  has_many :facilities, -> { distinct }, through: :roles
 
 
   # ----------------------------------------------------------
@@ -54,7 +60,35 @@ class Person < ApplicationRecord
 
 
   # ----------------------------------------------------------
-  # 4. Methoden für die Visualisierung
+  # 4. Validierung der externen ID
+  #
+  # Die external_id ist die ID der Person auf
+  # rlp-forschung.de. Sie muss vorhanden und eindeutig sein,
+  # damit der Importer eine Person bei erneutem Import
+  # wiederfindet und keine Duplikate entstehen.
+  # ----------------------------------------------------------
+
+  validates :external_id, presence: true, uniqueness: true
+
+
+  # ----------------------------------------------------------
+  # 5. Scopes für Suche und Sortierung
+  #
+  # alphabetical sortiert Forschende nach Nachname und
+  # Vorname. search_by_name sucht in Vor- und Nachname,
+  # ohne auf Groß- und Kleinschreibung zu achten.
+  # ----------------------------------------------------------
+
+  scope :alphabetical, -> { order(:last_name, :first_name) }
+
+  scope :search_by_name, lambda { |query|
+    pattern = "%#{sanitize_sql_like(query.to_s.strip)}%"
+    where("first_name ILIKE :q OR last_name ILIKE :q", q: pattern)
+  }
+
+
+  # ----------------------------------------------------------
+  # 6. Methoden für die Visualisierung
   # ----------------------------------------------------------
 
   # /*
@@ -76,9 +110,29 @@ class Person < ApplicationRecord
   # - String mit dem vollständigen Namen der Person.
   # */
   def full_name
-    [ first_name, last_name ]
-      .compact
-      .reject(&:blank?)
-      .join(" ")
+    [ first_name, last_name ].compact_blank.join(" ")
+  end
+
+
+  # /*
+  # Title: display_name
+  #
+  # Desc:
+  # Implementiert den Anwendungsfall
+  # "Forschende mit akademischem Titel anzeigen".
+  #
+  # Die Methode stellt dem vollständigen Namen den
+  # akademischen Titel voran, z. B. "Dr. Hans Meier",
+  # für Tooltips und den Detailbereich.
+  #
+  # Parameters:
+  # - Keine expliziten Parameter.
+  # - Verwendet title und full_name des Person-Objekts.
+  #
+  # Returns:
+  # - String mit Titel und vollständigem Namen.
+  # */
+  def display_name
+    [ title, full_name ].compact_blank.join(" ")
   end
 end

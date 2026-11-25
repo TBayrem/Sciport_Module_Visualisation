@@ -1,67 +1,146 @@
+# ============================================================
+# Title: SciPort Research Visualization - Gemfile
+# Desc:
+#   Definiert die Ruby-Abhängigkeiten des Rails-Projekts.
+#
+#   Ergänzung:
+#   dotenv-rails lädt lokale Umgebungsvariablen aus .env,
+#   insbesondere das PostgreSQL-Passwort.
+# ============================================================
+
 source "https://rubygems.org"
 
-# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.1.3", ">= 8.1.3.1"
-# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
-gem "propshaft"
-# Use postgresql as the database for Active Record
-gem "pg", "~> 1.1"
-# Use the Puma web server [https://github.com/puma/puma]
-gem "puma", ">= 5.0"
-# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem "importmap-rails"
-# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails"
-# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
-gem "stimulus-rails"
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder"
+# ============================================================
+# 1. RAILS FRAMEWORK
+# ============================================================
 
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+# Rails 8.1
+gem "rails", "~> 8.1.3", ">= 8.1.3.1"
+
+# Moderne Asset-Pipeline
+gem "propshaft"
+
+# ============================================================
+# 2. DATENBANK
+# ============================================================
+
+# PostgreSQL-Adapter für Active Record
+gem "pg", "~> 1.1"
+
+# ============================================================
+# 3. WEBSERVER
+# ============================================================
+
+# Puma-Webserver
+gem "puma", ">= 5.0"
+
+# ============================================================
+# 4. JAVASCRIPT UND FRONTEND
+# ============================================================
+
+# JavaScript-Module über Importmap
+gem "importmap-rails"
+
+# ============================================================
+# 5. OPTIONALE AUTHENTIFIZIERUNG
+# ============================================================
+
+# Bei Bedarf aktivieren:
 # gem "bcrypt", "~> 3.1.7"
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+# ============================================================
+# 6. WINDOWS-UNTERSTÜTZUNG
+# ============================================================
+
+# Zeitzonendaten für Windows und JRuby
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
-# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
+# ============================================================
+# 7. RAILS-INFRASTRUKTUR
+# ============================================================
+
+# Datenbankgestützter Cache
 gem "solid_cache"
+
+# Datenbankgestützte Hintergrundaufgaben
 gem "solid_queue"
+
+# Datenbankgestütztes Action Cable
 gem "solid_cable"
 
-# Reduces boot times through caching; required in config/boot.rb
+# ============================================================
+# 8. PERFORMANCE
+# ============================================================
+
+# Beschleunigt den Start der Rails-Anwendung
 gem "bootsnap", require: false
 
-# Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
+# ============================================================
+# 9. DEPLOYMENT
+# ============================================================
+
+# Docker-Deployment mit Kamal
 gem "kamal", require: false
 
-# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+# HTTP-Komprimierung und Asset-Auslieferung
 gem "thruster", require: false
 
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+# ============================================================
+# 11. ENTWICKLUNG UND TESTS
+# ============================================================
 
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  # Ruby-Debugger
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
-  # Audits gems for known security defects (use config/bundler-audit.yml to ignore issues)
+  # Sicherheitsprüfung der Gem-Abhängigkeiten
   gem "bundler-audit", require: false
 
-  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
+  # Statische Sicherheitsanalyse
   gem "brakeman", require: false
 
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
+  # Ruby-Codeformatierung
   gem "rubocop-rails-omakase", require: false
+
+  # ==========================================================
+  # Title: dotenv-rails
+  # Desc:
+  #   Liest beim lokalen Rails-Start die Datei .env.
+  #   Dadurch wird POSTGRES_PASSWORD automatisch geladen,
+  #   auch für die automatisierten Tests (rails test), die
+  #   sonst ohne Passwort keine Verbindung zur Test-
+  #   datenbank bekommen.
+  #
+  # Security:
+  #   Die Datei .env darf nicht versioniert werden.
+  # ==========================================================
+  gem "dotenv-rails"
 end
 
+# ============================================================
+# 12. LOKALE ENTWICKLUNG
+# ============================================================
+
 group :development do
-  # Use console on exceptions pages [https://github.com/rails/web-console]
+  # Interaktive Konsole auf Fehlerseiten
   gem "web-console"
 end
 
+# ============================================================
+# 13. SYSTEMTESTS
+# ============================================================
+
 group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  # Browserbasierte Tests
   gem "capybara"
+
+  # Automatisierte Browsersteuerung
   gem "selenium-webdriver"
 end
+
+# ============================================================
+# 14. ZUSÄTZLICHE BIBLIOTHEKEN
+# ============================================================
+
+# Zugriff auf native Bibliotheken
 gem "fiddle"

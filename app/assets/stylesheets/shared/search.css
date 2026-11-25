@@ -1,0 +1,75 @@
+/* ============================================================
+   Datei: app/assets/stylesheets/shared/search.css
+   Gehört zu: app/views/shared/_search.html.erb
+              app/javascript/search_box.js
+
+   Desc:
+     Suchzeile mit Suchfeld, Vorschlagsliste und
+     Zurücksetzen-Knopf.
+   ============================================================ */
+
+/* Zeile: Suchfeld füllt die Breite, Knopf rechts daneben */
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.sw {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+}
+
+input[type="search"] {
+  width: 100%;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #f4f4f2;
+}
+
+/* Vorschlagsliste; SearchBox setzt die Klasse "open" */
+.ac {
+  position: absolute;
+  top: 38px;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: none;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.ac.open { display: block; }
+
+/* Gruppenüberschrift (Personen, Einrichtungen) */
+.ac .g {
+  padding: 6px 12px 2px;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Ein Vorschlag: Name links, Zusatz (Einrichtung) rechts */
+.ac .it {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.ac .it:hover,
+.ac .it.on { background: var(--accent-bg); }
+
+.ac .it b { font-weight: 600; }
+.ac .it .c { color: var(--text-muted); font-size: 12px; white-space: nowrap; }

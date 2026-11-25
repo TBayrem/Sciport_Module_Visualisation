@@ -1,112 +1,113 @@
-
 <!DOCTYPE html>
+<%#
+  ============================================================
+  Datei: app/views/layouts/application.html.erb
+
+  Desc:
+    Gemeinsames Layout aller drei Seiten (vgl. Abb. 7).
+    Es besteht aus vier festen Bereichen:
+
+      1. Kopfzeile   (.topbar) – Name und Zweck der Anwendung
+      2. Navigation  (.side)   – Links zu den drei Seiten
+      3. Inhalt      (.main)   – die jeweilige Seiten-View
+      4. Fußzeile    (.foot)   – Datenstand und Datenquelle
+
+    Die Seiten-Views (networks/index, topic_maps/index,
+    combined_views/index) füllen nur den Inhaltsbereich.
+    Den Seitentitel setzen sie mit content_for :title.
+
+    JavaScript: page.js ist der einzige Einstiegspunkt.
+    Er liest das data-page-Attribut des Inhaltsbereichs und
+    baut die passenden Komponenten der Seite auf.
+  ============================================================
+%>
 <html lang="de">
   <head>
-    <%#
-      ============================================================
-      Datei: app/views/layouts/application.html.erb
-
-      Desc:
-      Gemeinsames HTML-Layout der Rails-Anwendung.
-
-      Das Layout bindet die benötigten Stylesheets
-      und JavaScript-Module ein und stellt den
-      Seiteninhalt der jeweiligen View dar.
-
-      Anwendungsfälle:
-      - Gemeinsames HTML-Grundgerüst bereitstellen
-      - Forschungsnetzwerk gestalten
-      - Rails Turbo und Importmap einbinden
-      ============================================================
-    %>
-
-    <%#
-      ------------------------------------------------------------
-      1. Allgemeine Metadaten
-
-      Legt die Zeichenkodierung und die Darstellung
-      auf mobilen Endgeräten fest.
-      ------------------------------------------------------------
-    %>
-
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <title>
+      <%= [ content_for(:title), "SciPort RLP – Visualisierung" ].compact_blank.join(" · ") %>
+    </title>
 
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1"
-    >
-
-    <title>SciPort – Forschungsvisualisierung</title>
-
-    <%#
-      ------------------------------------------------------------
-      2. Rails-Sicherheitsfunktionen
-
-      csrf_meta_tags unterstützt den Schutz
-      von Formularanfragen.
-
-      csp_meta_tag bindet die konfigurierte
-      Content Security Policy ein.
-      ------------------------------------------------------------
-    %>
-
+    <%# Schutz für Formulare und Content Security Policy (Rails-Standard). %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%#
-      ------------------------------------------------------------
-      3. Gemeinsames Stylesheet
-
-      Lädt das allgemeine CSS der Rails-Anwendung.
-      ------------------------------------------------------------
+      Stylesheets in fester Reihenfolge: zuerst Layout und
+      Gemeinsames, dann die Seiten, die geteilten Partials und
+      die Grafik-Komponenten. Die Ordner entsprechen app/views
+      und app/javascript.
     %>
+    <%= stylesheet_link_tag "application",
+                            "networks/index",
+                            "topic_maps/index",
+                            "combined_views/index",
+                            "shared/search",
+                            "shared/detail_panel",
+                            "shared/legend",
+                            "network_view",
+                            "bar_chart",
+                            "topic_map_view",
+                            "topic_cards" %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-
-    <%#
-      ------------------------------------------------------------
-      4. Stylesheet des Forschungsnetzwerks
-
-      network.css wird ausschließlich geladen,
-      wenn die Action network im Controller
-      VisualizationsController aufgerufen wird.
-      ------------------------------------------------------------
-    %>
-
-    <% if controller_name == "visualizations" && action_name == "network" %>
-      <%= stylesheet_link_tag "network", "data-turbo-track": "reload" %>
-    <% end %>
-
-    <%#
-      ------------------------------------------------------------
-      5. JavaScript über Rails Importmap
-
-      Lädt den zentralen Einstiegspunkt application.js.
-
-      Darüber werden Turbo, Stimulus und die
-      JavaScript-Module des Forschungsnetzwerks
-      eingebunden.
-      ------------------------------------------------------------
-    %>
-
-    <%= javascript_importmap_tags %>
+    <%# Lädt die Importmap und startet page.js als Einstiegspunkt. %>
+    <%= javascript_importmap_tags "page" %>
   </head>
 
   <body>
-    <%#
-      ------------------------------------------------------------
-      6. Seiteninhalt
+    <div class="app">
 
-      yield fügt die jeweils aufgerufene View
-      in das gemeinsame Layout ein.
+      <%# ---------------------------------------------------- %>
+      <%# 1. Kopfzeile                                         %>
+      <%# ---------------------------------------------------- %>
+      <header class="topbar">
+        <span class="lg">SciPort RLP</span>
+        <span class="tt">Visualisierung von Kooperationen und Forschungsthemen</span>
+        <span class="rt">Forschungsportal der rheinland-pfälzischen Hochschulen</span>
+      </header>
 
-      Aktuelle View:
-      - visualizations/network.html.erb
-      ------------------------------------------------------------
-    %>
+      <%# ---------------------------------------------------- %>
+      <%# 2. Navigation                                        %>
+      <%#                                                      %>
+      <%# Jeder Eintrag ist ein normaler Link (GET). Die       %>
+      <%# aktuelle Seite wird mit der Klasse "on" markiert.    %>
+      <%# ---------------------------------------------------- %>
+      <nav class="side" aria-label="Seiten">
+        <%= link_to "Netzwerk", networks_path,
+                    class: [ "nav", { on: controller_name == "networks" } ] %>
+        <%= link_to "2D und Cluster", topic_maps_path,
+                    class: [ "nav", { on: controller_name == "topic_maps" } ] %>
+        <%= link_to "Kombinierte Ansicht", combined_views_path,
+                    class: [ "nav", { on: controller_name == "combined_views" } ] %>
+      </nav>
 
-    <main>
-      <%= yield %>
-    </main>
+      <%# ---------------------------------------------------- %>
+      <%# 3. Inhalt der jeweiligen Seite                       %>
+      <%# ---------------------------------------------------- %>
+      <main class="main">
+        <%= yield %>
+      </main>
+
+      <%# ---------------------------------------------------- %>
+      <%# 4. Fußzeile                                          %>
+      <%#                                                      %>
+      <%# latest_run kommt aus dem ApplicationController.      %>
+      <%# ---------------------------------------------------- %>
+      <footer class="foot">
+        <span>
+          <% if latest_run %>
+            Datenstand: Analyselauf vom
+            <%= latest_run.finished_at.strftime("%d.%m.%Y, %H:%M Uhr") %>
+          <% else %>
+            Datenstand: noch kein Analyselauf abgeschlossen
+          <% end %>
+        </span>
+        <span>Datenquelle: SciPort RLP</span>
+        <span class="credit">Hochschule Worms · Forschungsgruppe UX-Vis</span>
+      </footer>
+
+    </div>
   </body>
 </html>

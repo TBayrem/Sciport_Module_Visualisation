@@ -1,4 +1,3 @@
-
 # ============================================================
 # Model: ResearchProject
 #
@@ -8,7 +7,8 @@
 #
 # Das Model verwaltet die Beziehungen zwischen Projekten,
 # beteiligten Forschenden, wissenschaftlichen Einrichtungen
-# und zugehörigen Publikationen.
+# und zugehörigen Publikationen. Projekte sind direkt mit
+# Personen verknüpft und nicht über Rollen.
 #
 # Anwendungsfälle:
 # - Forschungsprojekte verwalten und abfragen
@@ -68,4 +68,94 @@ class ResearchProject < ApplicationRecord
   # ----------------------------------------------------------
 
   validates :title, presence: true
+
+
+  # ----------------------------------------------------------
+  # 5. Validierung der externen ID
+  #
+  # Die external_id ist die ID des Projekts auf
+  # rlp-forschung.de. Sie muss eindeutig sein, damit ein
+  # erneuter Import keine Duplikate erzeugt. Sie darf leer
+  # sein, weil bereits vorhandene Projekte noch keine
+  # external_id besitzen.
+  # ----------------------------------------------------------
+
+  validates :external_id, uniqueness: true, allow_nil: true
+
+
+  # ----------------------------------------------------------
+  # 6. Validierung der Projektlaufzeit
+  #
+  # Das Enddatum eines Projekts darf nicht vor seinem
+  # Startdatum liegen.
+  # ----------------------------------------------------------
+
+  validate :end_date_not_before_start_date
+
+
+  # ----------------------------------------------------------
+  # 7. Scope für laufende Projekte
+  #
+  # running liefert alle Projekte, die heute laufen.
+  # Ein fehlendes Start- oder Enddatum gilt als offen.
+  # ----------------------------------------------------------
+
+  scope :running, lambda {
+    today = Date.current
+    where("start_date IS NULL OR start_date <= ?", today)
+      .where("end_date IS NULL OR end_date >= ?", today)
+  }
+
+
+  # ----------------------------------------------------------
+  # 8. Methoden für die Visualisierung
+  # ----------------------------------------------------------
+
+  # /*
+  # Title: runtime
+  #
+  # Desc:
+  # Implementiert den Anwendungsfall
+  # "Projektlaufzeit anzeigen".
+  #
+  # Die Methode liefert die Laufzeit eines Projekts im
+  # Format der Projektlisten des SciPort-Webservice.
+  #
+  # Parameters:
+  # - Keine expliziten Parameter.
+  # - Verwendet start_date und end_date des Projekts.
+  #
+  # Returns:
+  # - String mit Start- und Endjahr, z. B. "2000-2010".
+  # - "-2010", wenn das Startdatum fehlt.
+  # */
+  def runtime
+    "#{start_date&.year}-#{end_date&.year}"
+  end
+
+  private
+
+  # /*
+  # Title: end_date_not_before_start_date
+  #
+  # Desc:
+  # Implementiert den Anwendungsfall
+  # "Gültige Projektlaufzeit sicherstellen".
+  #
+  # Die Methode prüft, ob das Enddatum vor dem Startdatum
+  # liegt. Fehlt eines der beiden Daten, wird nicht geprüft.
+  #
+  # Parameters:
+  # - Keine expliziten Parameter.
+  # - Verwendet start_date und end_date des Projekts.
+  #
+  # Returns:
+  # - Nichts. Bei ungültiger Laufzeit wird ein Fehler zu
+  #   :end_date hinzugefügt und das Speichern verhindert.
+  # */
+  def end_date_not_before_start_date
+    return if start_date.blank? || end_date.blank?
+
+    errors.add(:end_date, "darf nicht vor dem Startdatum liegen") if end_date < start_date
+  end
 end

@@ -1,0 +1,31 @@
+/* ============================================================
+   Datei: app/assets/stylesheets/networks/index.css
+   Gehört zu: app/views/networks/index.html.erb
+
+   Desc:
+     Raster der Seite "Netzwerk": Grafik links, Infobereich
+     rechts, darunter das Balkendiagramm. Die Grafik nimmt die
+     gesamte freie Höhe ein.
+   ============================================================ */
+
+.network-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Balkendiagramm mit fester Höhe; längere Listen scrollen
+   innerhalb des Panels. */
+.bar-panel {
+  flex: none;
+  max-height: 150px;
+  margin-top: 10px;
+  overflow-y: auto;
+}
+
+/* Niedrige Fenster: Mindesthöhe für die Grafik. */
+@media (max-height: 650px) {
+  .network-layout { min-height: 420px; }
+}

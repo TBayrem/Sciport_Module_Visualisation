@@ -1,4 +1,3 @@
-
 # ============================================================
 # Model: Publication
 #
@@ -23,14 +22,18 @@ class Publication < ApplicationRecord
   # 1. Beziehungen zu Autoreneinträgen
   #
   # Eine Publikation kann mehrere Autoreneinträge besitzen.
-  # Jeder Autoreneintrag enthält die Namensinformationen
-  # einer an der Publikation beteiligten Person.
+  # Die Einträge werden immer nach ihrer Position sortiert
+  # geliefert, damit die Reihenfolge der Autorenliste
+  # erhalten bleibt.
   #
   # Beim Löschen einer Publikation werden auch ihre
   # zugehörigen Autoreneinträge gelöscht.
   # ----------------------------------------------------------
 
-  has_many :authorships, dependent: :destroy
+  has_many :authorships,
+           -> { order(:position) },
+           dependent: :destroy,
+           inverse_of: :publication
 
 
   # ----------------------------------------------------------
@@ -87,4 +90,66 @@ class Publication < ApplicationRecord
   # ----------------------------------------------------------
 
   validates :title, presence: true
+
+
+  # ----------------------------------------------------------
+  # 6. Validierung der externen ID und des Erscheinungsjahres
+  #
+  # Die external_id ist die ID der Publikation auf
+  # rlp-forschung.de. Sie muss eindeutig sein, damit ein
+  # erneuter Import keine Duplikate erzeugt. Sie darf leer
+  # sein, weil bereits vorhandene Publikationen noch keine
+  # external_id besitzen.
+  #
+  # Das Erscheinungsjahr muss eine ganze Zahl sein.
+  # ----------------------------------------------------------
+
+  validates :external_id, uniqueness: true, allow_nil: true
+
+  validates :publication_year, numericality: { only_integer: true }, allow_nil: true
+
+
+  # ----------------------------------------------------------
+  # 7. Scopes für Filter und Sortierung
+  #
+  # published_in filtert nach einem Jahr oder Jahresbereich,
+  # z. B. published_in(2010) oder published_in(2008..2012).
+  # newest_first sortiert die neuesten Publikationen nach vorn.
+  # ----------------------------------------------------------
+
+  scope :published_in, ->(years) { where(publication_year: years) }
+
+  scope :newest_first, -> { order(publication_year: :desc) }
+
+
+  # ----------------------------------------------------------
+  # 8. Methoden für die Visualisierung
+  # ----------------------------------------------------------
+
+  # /*
+  # Title: author_list
+  #
+  # Desc:
+  # Implementiert den Anwendungsfall
+  # "Autorenliste einer Publikation anzeigen".
+  #
+  # Die Methode liefert die Autorennamen in Zitierform,
+  # getrennt durch Semikolon, wie in den Publikationslisten
+  # des SciPort-Webservice. Bei sehr langen Listen kann
+  # gekürzt werden; dann wird "et al." angehängt.
+  #
+  # Parameters:
+  # - limit (Integer, optional): maximale Anzahl angezeigter
+  #   Namen. Ohne Angabe werden alle Namen ausgegeben.
+  #
+  # Returns:
+  # - String mit den Autorennamen, z. B.
+  #   "Keidel, Ralf; Conner, Eric Sean et al."
+  # */
+  def author_list(limit: nil)
+    names = authorships.map(&:citation_name)
+    return names.join("; ") if limit.nil? || names.size <= limit
+
+    "#{names.first(limit).join('; ')} et al."
+  end
 end

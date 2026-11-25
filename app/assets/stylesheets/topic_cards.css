@@ -1,0 +1,88 @@
+/* ============================================================
+   Datei: app/assets/stylesheets/topic_cards.css
+   Gehört zu: app/javascript/topic_cards.js
+
+   Desc:
+     Themenkarten unter der Themenkarte: je Cluster eine Karte
+     mit Farbfeld, Titel (erste drei Begriffe), Anzahl der
+     Personen und weiteren Begriffen. Die Karten sind Knöpfe;
+     die Grundgestaltung von button (application.css) wird
+     hier überschrieben.
+   ============================================================ */
+
+.topic-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 8px;
+}
+
+.topic-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: auto;
+  padding: 8px 10px;
+  text-align: left;
+  color: var(--text);
+  background: #fff;
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  cursor: zoom-in;
+}
+
+.topic-card:hover,
+.topic-card:focus-visible {
+  background: var(--surface-muted);
+  border-color: var(--border-strong);
+  outline: none;
+}
+
+/* Thema der ausgewählten Person */
+.topic-card.active {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+}
+
+.topic-card-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+/* Farbfeld in der Clusterfarbe (color kommt von topic-N) */
+.topic-card .swatch {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  background: currentColor;
+  border-radius: 50%;
+}
+
+.topic-card strong {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topic-card .size {
+  flex: none;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.topic-card .terms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.topic-card .term {
+  padding: 1px 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: var(--surface-muted);
+  border-radius: 10px;
+}

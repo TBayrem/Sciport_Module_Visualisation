@@ -1,0 +1,56 @@
+<%#
+  ============================================================
+  Datei: app/views/networks/index.html.erb
+
+  Desc:
+    Seite "Forschungsnetzwerk" (UC 1, UC 2). Füllt den
+    Inhaltsbereich des Layouts.
+
+    Daten: @network_data (Visualization::NetworkGraph#to_h)
+    wird als data-network-Attribut eingebettet. Rails wandelt
+    den Hash dabei automatisch in JSON um und maskiert ihn
+    für HTML. page.js liest das Attribut aus und übergibt die
+    Daten an NetworkView, BarChart und SearchBox.
+
+    JavaScript-Anker: Die Komponenten finden ihre Elemente
+    über data-Attribute (data-network-view, data-bar-chart,
+    ...), nicht über IDs. So bleibt das Markup unabhängig von
+    der Gestaltung.
+  ============================================================
+%>
+<% content_for :title, "Netzwerk" %>
+
+<%= tag.div class: "page", data: { page: "network", network: @network_data } do %>
+  <h1 class="hd">Netzwerkvisualisierung</h1>
+  <p class="sub">Netzwerk der Forschenden über ihre Einrichtungen und Fachbereiche.</p>
+
+  <%= render "shared/search", placeholder: "Person oder Einrichtung suchen …" %>
+
+  <div class="network-layout">
+    <%# Netzwerkgrafik mit Zoomsteuerung und Tooltip %>
+    <section class="panel graph-panel" aria-label="Netzwerk">
+      <svg class="graph" data-network-view viewBox="0 0 600 530" role="img"
+           aria-label="Netzwerk der Einrichtungen und Personen"></svg>
+
+      <div class="zc" data-zoom-controls>
+        <span data-zoom-level></span>
+        <button type="button" data-zoom="in" title="Vergrößern">+</button>
+        <button type="button" data-zoom="out" title="Verkleinern">−</button>
+        <button type="button" data-zoom="home" title="Gesamtansicht">⌂</button>
+      </div>
+
+      <div class="tip" data-tooltip></div>
+    </section>
+
+    <%= render "shared/detail_panel" %>
+  </div>
+
+  <%# Balkendiagramm: Projekte pro Person (BarChart) %>
+  <section class="panel bar-panel" aria-label="Projekte pro Person">
+    <h2 class="pt">Projekte pro Person</h2>
+    <p class="hint" data-bar-chart-hint>Alle Personen</p>
+    <svg class="bar-chart" data-bar-chart width="100%"></svg>
+  </section>
+
+  <%= render "shared/legend", network: true %>
+<% end %>

@@ -1,15 +1,17 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# ============================================================
+# Datei: test/fixtures/research_projects.yml
+# ============================================================
+projekt_vis:
+  external_id: "R-1"
+  title: Visualisierung wissenschaftlicher Netzwerke
+  description: Interaktive Darstellung von Kooperationen
+  keywords: Netzwerk; Visualisierung
+  start_date: 2024-01-01
+  end_date: 2026-12-31
 
-one:
-  title: MyString
-  description: MyText
-  keywords: MyText
-  start_date: 2026-10-03
-  end_date: 2026-10-03
-
-two:
-  title: MyString
-  description: MyText
-  keywords: MyText
-  start_date: 2026-10-03
-  end_date: 2026-10-03
+projekt_ml:
+  external_id: "R-2"
+  title: Maschinelles Lernen für Forschungsdaten
+  description: Clusterverfahren für Forschungsprofile
+  keywords: Clustering; Lernen
+  start_date: 2025-04-01

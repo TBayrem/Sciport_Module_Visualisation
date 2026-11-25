@@ -1,0 +1,105 @@
+/* ============================================================
+   Datei: app/assets/stylesheets/shared/legend.css
+   Gehört zu: app/views/shared/_legend.html.erb
+              app/javascript/legend.js
+
+   Desc:
+     Aufklappbare Legende ("ⓘ Legende") unten rechts sowie
+     die unsichtbare Symbolvorlage (<symbol>), die Legende und
+     Grafiken gemeinsam verwenden.
+
+     Farben und Formen der Beispielsymbole kommen aus den
+     Stylesheets der Grafiken (z. B. network_view.css), damit
+     Legende und Grafik immer übereinstimmen.
+   ============================================================ */
+
+/* Symbolvorlagen für <use>; selbst unsichtbar */
+.icon-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Zeile mit dem Knopf, rechtsbündig */
+.legrow {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  flex: none;
+  margin-top: 8px;
+}
+
+.legrow > button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  color: var(--accent);
+}
+
+/* Aufgeklapptes Feld über dem Knopf */
+.legpop {
+  position: absolute;
+  right: 0;
+  bottom: 40px;
+  z-index: 30;
+  width: 360px;
+  padding: 12px 14px;
+  font-size: 12px;
+  color: var(--text);
+  background: #fff;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.legpop[hidden] { display: none; }
+
+/* Netzwerk und Clusterkarte nebeneinander (kombinierte Ansicht) */
+.legpop.wide { width: 680px; }
+
+.legpop.wide .legend-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 24px;
+}
+
+.legpop h4 {
+  margin: 8px 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.legpop .legend-columns > div > h4:first-child { margin-top: 0; }
+
+/* Ein Eintrag: Beispielsymbol links, Text rechts */
+.legpop .li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+  line-height: 1.35;
+}
+
+.legpop .li svg { flex: none; }
+
+/* Schließen-Knopf "×" */
+.legpop .x {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: auto;
+  height: auto;
+  padding: 0;
+  font-size: 16px;
+  color: var(--text-secondary);
+  background: none;
+  border: 0;
+}
+
+/* Graue Standardfarbe für Beispielsymbole ohne eigene Klasse */
+.legend-icon { color: var(--text-secondary); }

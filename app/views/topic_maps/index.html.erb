@@ -1,0 +1,75 @@
+<%#
+  ============================================================
+  Datei: app/views/topic_maps/index.html.erb
+
+  Desc:
+    Seite "Themenkarte" (UC 3, UC 4). Jede Person ist ein
+    Symbol; ähnliche Forschungsprofile liegen nah beieinander,
+    die Farbe zeigt den Themencluster.
+
+    Daten: @topic_map (Visualization::TopicMap#to_h) wird als
+    data-topic-map-Attribut eingebettet. page.js liest es aus
+    und startet TopicMapView, TopicCards, DetailPanel und
+    SearchBox.
+
+    Ohne fertigen Analyselauf erscheint nur ein Hinweis.
+  ============================================================
+%>
+<% content_for :title, "Themenkarte" %>
+
+<% if @topic_map[:available] %>
+  <%= tag.div class: "page", data: { page: "topic-map", topic_map: @topic_map } do %>
+    <h1 class="hd">Themenkarte</h1>
+    <p class="sub">
+      Forschende nach inhaltlicher Ähnlichkeit ihrer Projekte und Publikationen.
+      Stand der Analyse: <%= @topic_map[:run][:finished_at] %>
+    </p>
+
+    <%= render "shared/search", placeholder: "Person oder Einrichtung suchen …" %>
+
+    <%= render "parameters", topic_map: @topic_map %>
+
+    <div class="topic-layout">
+      <%# Punktwolke mit Zoomsteuerung und Tooltip %>
+      <section class="panel graph-panel" aria-label="Themenkarte">
+        <svg class="graph" data-topic-map-view role="img"
+             aria-label="Personen nach Forschungsthemen"></svg>
+
+        <div class="zc" data-zoom-controls>
+          <span data-zoom-level></span>
+          <button type="button" data-zoom="in" title="Vergrößern">+</button>
+          <button type="button" data-zoom="out" title="Verkleinern">−</button>
+          <button type="button" data-zoom="home" title="Gesamtansicht">⌂</button>
+        </div>
+
+        <div class="tip" data-tooltip></div>
+      </section>
+
+      <%= render "shared/detail_panel" %>
+    </div>
+
+    <%# Themenkarten: ein Eintrag je Cluster (TopicCards) %>
+    <section class="panel topics-panel" aria-label="Themen">
+      <h2 class="pt">Themen</h2>
+      <p class="hint">
+        <%= @topic_map[:clustering][:cluster_count] %> Cluster
+        <% if @topic_map[:clustering][:noise_count].positive? %>
+          · <%= @topic_map[:clustering][:noise_count] %> Personen ohne Cluster
+        <% end %>
+        · Überfahren hebt hervor, Klick zoomt auf das Thema
+      </p>
+      <div class="topic-cards" data-topic-cards></div>
+    </section>
+
+    <%= render "shared/legend", clusters: true %>
+  <% end %>
+<% else %>
+  <h1 class="hd">Themenkarte</h1>
+  <section class="panel empty-state">
+    <p>
+      Es liegt noch kein fertiger Analyselauf vor. Die Analyse
+      läuft nachts automatisch, von Hand startest du sie mit
+      <code>ruby bin/rails analysis:run</code>.
+    </p>
+  </section>
+<% end %>

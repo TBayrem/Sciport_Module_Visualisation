@@ -1,0 +1,110 @@
+/* ============================================================
+   Datei: app/assets/stylesheets/network_view.css
+   Gehört zu: app/javascript/network_view.js
+
+   Desc:
+     Knoten und Kanten des Forschungsnetzwerks. Dieselben
+     Klassen verwendet die Legende (shared/_legend) für ihre
+     Beispielsymbole. Die Ähnlichkeitskanten (edge-similarity)
+     erscheinen nur in der kombinierten Ansicht.
+   ============================================================ */
+
+:root {
+  --facility: #3d3c38;
+  --department: #185fa5;
+  --person: #5f5e5a;
+  --link-project: #ef9f27;
+  --link-publication: #a32d2d;
+  --link-both: #7b5cc4;
+  --affiliation: #b4b2a9;
+  --link-similarity: #0f8b7d;
+}
+
+
+/* ------------------------------------------------------------
+   Knoten: Symbolfarbe über color, weißer Hintergrund verdeckt
+   die Kanten hinter dem Symbol.
+   ------------------------------------------------------------ */
+
+.node { cursor: pointer; }
+.node-facility     { color: var(--facility); }
+.node-sub-facility { color: var(--department); }
+.node-person       { color: var(--person); }
+
+.node-backdrop { fill: #fff; }
+.node-person .node-backdrop { fill: none; }
+
+.node .selection-ring { display: none; }
+.node.selected .selection-ring { display: inline; }
+
+.node:hover use { filter: drop-shadow(0 0 2px var(--accent)); }
+
+/* Beschriftungen mit weißem Rand für Lesbarkeit über Kanten */
+.node-label {
+  font-size: 11px;
+  fill: var(--text-secondary);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-width: 3px;
+  pointer-events: none;
+}
+
+.node-label.level-1 { font-size: 12px; font-weight: 600; fill: var(--text); }
+
+
+/* ------------------------------------------------------------
+   Zugehörigkeit: Fachbereich – Hochschule (ab Stufe 2),
+   Person – Fachbereich bzw. Hochschule (ab Stufe 3)
+   ------------------------------------------------------------ */
+
+.edge-affiliation {
+  fill: none;
+  stroke: var(--affiliation);
+  stroke-width: 1.2;
+  pointer-events: none;
+}
+
+
+/* ------------------------------------------------------------
+   Kooperationen: eine Kante je Paar, Farbe nach Art
+   ------------------------------------------------------------ */
+
+.link { cursor: pointer; }
+.link-line { fill: none; stroke-linecap: round; opacity: 0.55; }
+.link-hit  { stroke: transparent; }
+
+.link-project     .link-line { stroke: var(--link-project); }
+.link-publication .link-line { stroke: var(--link-publication); }
+.link-both        .link-line { stroke: var(--link-both); }
+
+.link:hover .link-line,
+.link.selected .link-line { opacity: 1; }
+
+
+/* ------------------------------------------------------------
+   Thematische Ähnlichkeit (kombinierte Ansicht, FA31):
+   gestrichelt, damit sie sich klar von den Kooperationen
+   (durchgezogen) unterscheidet
+   ------------------------------------------------------------ */
+
+.edge-similarity {
+  fill: none;
+  stroke: var(--link-similarity);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+.similar .edge-similarity { pointer-events: none; }
+.similar:hover .edge-similarity { opacity: 1; stroke-width: 2.5; }
+
+
+/* ------------------------------------------------------------
+   Auswahl: unbeteiligte Elemente treten zurück
+   ------------------------------------------------------------ */
+
+.has-selection .link.dimmed,
+.has-selection .similar.dimmed { opacity: 0.12; }
+.has-selection .node.dimmed { opacity: 0.25; }

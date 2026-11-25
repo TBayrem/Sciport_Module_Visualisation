@@ -1,4 +1,3 @@
-
 # ============================================================
 # Datei: config/database.yml
 #
@@ -8,7 +7,8 @@
 #
 # Das PostgreSQL-Passwort wird nicht in dieser Datei gespeichert.
 # Stattdessen liest Rails das Passwort aus der Umgebungsvariable
-# POSTGRES_PASSWORD.
+# POSTGRES_PASSWORD, die dotenv-rails beim Start aus der
+# Datei .env lädt.
 #
 # Anwendungsfälle:
 # - Sichere Verbindung zur PostgreSQL-Datenbank herstellen
@@ -44,7 +44,7 @@ default: &default
   # ----------------------------------------------------------
   # 1.1 PostgreSQL-Server
   #
-  # localhost bezeichnet den lokalen Computer.
+  # 127.0.0.1 bezeichnet den lokalen Computer.
   #
   # Port 5432 ist der Standardport von PostgreSQL.
   # ----------------------------------------------------------
@@ -67,13 +67,35 @@ default: &default
   # Das Passwort wird ausschließlich aus der
   # Umgebungsvariable POSTGRES_PASSWORD gelesen.
   #
-  # Diese Variable wird vor dem Start von Rails
-  # in PowerShell gesetzt.
+  # dotenv-rails lädt diese Variable beim Start von Rails
+  # aus der Datei .env im Projektordner. Die Datei .env
+  # wird nicht versioniert (siehe .gitignore).
   #
   # Das Passwort selbst steht nicht im Quellcode.
+  #
+  # to_s.inspect setzt den Wert in Anführungszeichen. So bleibt das
+  # Passwort auch dann Text, wenn es nur aus Ziffern besteht
+  # oder YAML-Sonderzeichen wie : oder # enthält. Ohne
+  # Anführungszeichen würde YAML ein reines Ziffernpasswort als
+  # Zahl lesen, und PostgreSQL lehnt die Anmeldung ab.
   # ----------------------------------------------------------
 
-  password: <%= ENV["POSTGRES_PASSWORD"] %>
+  password: <%= ENV["POSTGRES_PASSWORD"].to_s.inspect %>
+
+  # ----------------------------------------------------------
+  # 1.4 Verschlüsselung der lokalen Verbindung
+  #
+  # Unter Windows versucht der PostgreSQL-Client (Gem pg)
+  # zuerst eine GSSAPI- bzw. SSL-verschlüsselte Verbindung.
+  # Der lokale Server bricht diesen Versuch ab; Rails meldet
+  # dann "server closed the connection unexpectedly".
+  #
+  # Da Datenbank und Anwendung auf demselben Rechner laufen,
+  # wird die Verbindung unverschlüsselt aufgebaut.
+  # ----------------------------------------------------------
+
+  gssencmode: disable
+  sslmode: disable
 
 
 # ------------------------------------------------------------
@@ -121,6 +143,10 @@ test:
 #
 # Die bestehenden Datenbanknamen und Konfigurationen
 # für Cache, Queue und Cable bleiben erhalten.
+#
+# Hinweis: Auf einem Produktionsserver mit eigener
+# Datenbank-Infrastruktur kann sslmode dort wieder auf
+# "require" gesetzt werden, falls der Server SSL anbietet.
 # ------------------------------------------------------------
 
 production:
@@ -139,7 +165,8 @@ production:
 
     username: sciport_visualization
 
-    password: <%= ENV["SCIPORT_VISUALIZATION_DATABASE_PASSWORD"] %>
+    # to_s.inspect: Passwort immer als Text lesen (siehe 1.3).
+    password: <%= ENV["SCIPORT_VISUALIZATION_DATABASE_PASSWORD"].to_s.inspect %>
 
 
   # ----------------------------------------------------------

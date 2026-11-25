@@ -1,0 +1,75 @@
+/* ============================================================
+   Datei: app/assets/stylesheets/bar_chart.css
+   Gehört zu: app/javascript/bar_chart.js
+
+   Desc:
+     Balkendiagramm "Projekte pro Person": Name links, Balken,
+     Anzahl rechts. Die ausgewählte Person ist hervorgehoben.
+     In der kombinierten Ansicht zwei Balken je Person:
+     Projekte (blau) und Publikationen (orange), erklärt durch
+     die kleine Legende .bar-key über dem Diagramm.
+
+     Alle Regeln für die Balken gelten nur innerhalb von
+     .bar-chart: Die Klasse "bar" trägt auch die Suchzeile
+     (shared/_search). Ohne diese Einschränkung bekäme die
+     Suchzeile die Deckkraft der Balken (0.55), und ihre
+     Vorschlagsliste läge halb durchsichtig unter der Grafik.
+   ============================================================ */
+
+.bar-chart {
+  display: block;
+  margin-top: 6px;
+}
+
+.bar-row { cursor: pointer; }
+
+.bar-chart .bar {
+  fill: var(--accent);
+  opacity: 0.55;
+}
+
+.bar-chart .bar-publications { fill: var(--link-project); }
+
+.bar-chart .bar-row:hover .bar,
+.bar-chart .bar-row.selected .bar { opacity: 1; }
+
+.bar-label,
+.bar-value {
+  font-size: 11px;
+  dominant-baseline: central;
+  fill: var(--text-secondary);
+}
+
+.bar-label { text-anchor: end; }
+
+.bar-row.selected .bar-label,
+.bar-row.selected .bar-value {
+  font-weight: 600;
+  fill: var(--text);
+}
+
+/* Kleinere Zahlen bei zwei Balken je Person */
+.bar-value.small { font-size: 10px; }
+
+/* Legende der beiden Reihen (kombinierte Ansicht) */
+.bar-key {
+  display: flex;
+  gap: 12px;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.bar-key span::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  vertical-align: -1px;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0.55;
+}
+
+.bar-key .key-publications::before { background: var(--link-project); }

@@ -1,0 +1,72 @@
+<%#
+  Datei: app/views/topic_maps/_parameters.html.erb
+
+  Desc:
+    Formular für Projektion und Clustering der Themenkarte.
+    Sendet per GET an topic_maps#index; die Seite wird mit den
+    gewählten Parametern neu gerendert (MVC, keine JSON-API).
+
+    Angeboten werden nur Stufen, die der Analyselauf wirklich
+    berechnet hat (topic_map[:options]). Die Feldgruppe des
+    nicht gewählten Algorithmus ist ausgeblendet; page.js
+    blendet sie beim Wechsel des Algorithmus ein und sendet
+    das Formular bei jeder Änderung automatisch ab. Ohne
+    JavaScript bleibt der Knopf "Anwenden".
+
+  Lokale Variable:
+    topic_map  Hash aus Visualization::TopicMap#to_h
+%>
+
+<%
+  selection = topic_map[:selection]
+  options = topic_map[:options]
+  method_labels = { "pca" => "PCA", "tsne" => "t-SNE", "umap" => "UMAP" }
+  kmeans = selection[:algorithm] == "kmeans"
+%>
+
+<section class="panel parameters">
+  <%= form_with url: topic_maps_path, method: :get, local: true, data: { parameters_form: true } do |form| %>
+
+    <fieldset>
+      <legend>Projektion</legend>
+      <%= form.select :projection_method,
+            options_for_select(options[:projection_methods].map { |m| [ method_labels.fetch(m, m), m ] }, selection[:projection_method]),
+            {}, data: { auto_submit: true } %>
+    </fieldset>
+
+    <fieldset>
+      <legend>Clustering</legend>
+      <% if options[:kmeans_k].any? %>
+        <label>
+          <%= form.radio_button :algorithm, "kmeans", checked: kmeans, data: { algorithm_switch: true } %>
+          k-Means
+        </label>
+      <% end %>
+      <% if options[:dbscan].any? %>
+        <label>
+          <%= form.radio_button :algorithm, "dbscan", checked: !kmeans, data: { algorithm_switch: true } %>
+          DBSCAN
+        </label>
+      <% end %>
+    </fieldset>
+
+    <fieldset data-algorithm-group="kmeans" <%= "hidden" unless kmeans %>>
+      <legend>Anzahl Cluster k</legend>
+      <%= form.select :k,
+            options_for_select(options[:kmeans_k], selection[:k] || Visualization::TopicMap::DEFAULT_K),
+            {}, disabled: !kmeans, data: { auto_submit: true } %>
+    </fieldset>
+
+    <fieldset data-algorithm-group="dbscan" <%= "hidden" if kmeans %>>
+      <legend>Radius eps · Mindestpunkte</legend>
+      <%= form.select :eps,
+            options_for_select(options[:dbscan].map(&:first).uniq, selection[:eps]),
+            {}, disabled: kmeans, data: { auto_submit: true } %>
+      <%= form.select :min_pts,
+            options_for_select(options[:dbscan].map(&:last).uniq, selection[:min_pts]),
+            {}, disabled: kmeans, data: { auto_submit: true } %>
+    </fieldset>
+
+    <%= form.submit "Anwenden", name: nil, data: { parameters_submit: true } %>
+  <% end %>
+</section>

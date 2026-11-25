@@ -1,0 +1,26 @@
+<%#
+  ============================================================
+  Datei: app/views/shared/_search.html.erb
+
+  Desc:
+    Suchfeld mit Vorschlagsliste und Zurücksetzen-Knopf
+    (UC 2: Person suchen). Wird auf allen drei Seiten
+    verwendet. SearchBox (search_box.js) füllt die
+    Vorschlagsliste während der Eingabe; die Auswahl eines
+    Vorschlags geht an SelectionState.
+
+  Locals:
+    placeholder – Hinweistext im leeren Suchfeld
+  ============================================================
+%>
+<div class="bar" data-search-box>
+  <div class="sw">
+    <input type="search"
+           data-search-input
+           placeholder="<%= placeholder %>"
+           aria-label="Suche"
+           autocomplete="off">
+    <ul class="ac" data-search-suggestions role="listbox"></ul>
+  </div>
+  <button type="button" data-reset>Zurücksetzen</button>
+</div>

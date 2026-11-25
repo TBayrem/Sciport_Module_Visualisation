@@ -1,13 +1,49 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# ============================================================
+# Datei: test/fixtures/people.yml
+#
+#   anna   Informatik und Physik (zwei Einrichtungen, FA12)
+#   ben    Informatik
+#   carla  Physik
+#   dirk   ohne Rolle → erscheint nicht im Netzwerk
+#
+# Projekte und Publikationen (HABTM über die Verknüpfungs-
+# tabellen people_research_projects und people_publications):
+#   projekt_vis  anna, ben, carla
+#   projekt_ml   anna, ben
+#   pub_graph    anna, carla, dirk
+#
+# Erwartete Kooperationen:
+#   anna–ben    2 Projekte, 0 Publikationen
+#   anna–carla  1 Projekt,  1 Publikation
+#   ben–carla   1 Projekt,  0 Publikationen
+# ============================================================
+anna:
+  external_id: "P-1"
+  first_name: Anna
+  last_name: Albrecht
+  title: Prof. Dr.
+  field_of_research: Visualisierung von Netzwerken
+  research_projects: projekt_vis, projekt_ml
+  publications: pub_graph
 
-one:
-  first_name: MyString
-  last_name: MyString
-  title: MyString
-  field_of_research: MyText
+ben:
+  external_id: "P-2"
+  first_name: Ben
+  last_name: Becker
+  field_of_research: Maschinelles Lernen
+  research_projects: projekt_vis, projekt_ml
 
-two:
-  first_name: MyString
-  last_name: MyString
-  title: MyString
-  field_of_research: MyText
+carla:
+  external_id: "P-3"
+  first_name: Carla
+  last_name: Conrad
+  title: Dr.
+  field_of_research: Optik und Laserphysik
+  research_projects: projekt_vis
+  publications: pub_graph
+
+dirk:
+  external_id: "P-4"
+  first_name: Dirk
+  last_name: Dietz
+  publications: pub_graph

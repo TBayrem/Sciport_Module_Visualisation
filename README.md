@@ -1,210 +1,183 @@
 # SciPort Visualization
 
-**Interaktive Visualisierung von Forschungsnetzwerken und thematischen Forschungsstrukturen**
+**Visualisierungsmodul für SciPort RLP: Kooperationen und Forschungsthemen der rheinland-pfälzischen Hochschulen**
 
-Dieses Repository enthält eine Webanwendung zur interaktiven Exploration und Visualisierung von Forschungsdaten aus dem SciPort-Kontext. Die Anwendung entsteht im Rahmen einer Masterarbeit und verwendet Ruby on Rails, PostgreSQL und D3.js.
+Diese Rails-Anwendung entsteht im Rahmen der Masterarbeit „Entwicklung eines produktionsreifen Visualisierungsmoduls für SciPort RLP“ (Bayrem Trabelsi, Hochschule Worms, Betreuung: Prof. Dr. Alexander Wiebel). Sie stellt die Daten des Forschungsportals SciPort RLP auf drei Seiten dar:
 
-## 1. Projektziel
+| Seite | Adresse | Inhalt |
+|---|---|---|
+| Netzwerk | `/` bzw. `/networks` | Hochschulen, Fachbereiche und Personen als Netzwerk mit Kooperationen über gemeinsame Projekte und Publikationen |
+| Themenkarte | `/topic_maps` | Forschungsprofile als 2D-Karte (PCA, t-SNE oder UMAP), gruppiert nach Themen (k-Means oder DBSCAN) |
+| Kombinierte Ansicht | `/combined_views` | Netzwerk und Themenkarte nebeneinander mit gemeinsamer Auswahl und thematischen Ähnlichkeitskanten |
 
-Ziel des Projekts ist die Entwicklung einer webbasierten Visualisierungsumgebung, die Beziehungen zwischen Personen und Forschungseinrichtungen sowie thematische Zusammenhänge innerhalb der Forschungslandschaft zugänglich macht.
+## 1. Technik
 
-Die Anwendung verfolgt zwei Visualisierungsansätze:
-
-- **Forschungsnetzwerk:** Darstellung von Personen, Einrichtungen und ihren Beziehungen als interaktives Netzwerk.
-- **Thematische Forschungslandschaft:** Visualisierung thematischer Strukturen und Cluster.
-
-Die Visualisierungen sollen die explorative Analyse komplexer Forschungsdaten unterstützen.
-
-## 2. Technologie-Stack
-
-| Komponente | Technologie |
+| Komponente | Version / Technik |
 |---|---|
-| Backend | Ruby on Rails 8 |
-| Programmiersprache | Ruby 4 |
+| Programmiersprache | Ruby 4.0.6 (`.ruby-version`) |
+| Framework | Ruby on Rails 8.1 |
 | Datenbank | PostgreSQL 17 |
-| Visualisierung | D3.js 7 |
-| Frontend | JavaScript, HTML, CSS |
-| JavaScript-Einbindung | Rails Importmap |
-| Navigation | Hotwire Turbo |
-| Entwicklungsumgebung | Visual Studio Code, Windows PowerShell |
-| Versionsverwaltung | Git |
-| Primäres Entwicklungsrepository | GitLab |
+| Visualisierung | D3.js 7 (ES-Modul vom CDN jsDelivr) |
+| JavaScript | ES-Module über Importmap, kein Build-Schritt |
+| CSS | Propshaft, ein Stylesheet je Seite, Teilvorlage und Grafikkomponente |
+| Thematische Analyse | reines Ruby, ohne externe Bibliotheken |
 
-Die Versionsangaben beschreiben die aktuell verwendete lokale Entwicklungsumgebung.
+Der Browser braucht beim Aufruf Internetzugang, weil D3.js vom CDN geladen wird.
 
-## 3. Projektstruktur
+## 2. Architektur
+
+Die Anwendung folgt dem MVC-Muster von Rails. Es gibt keine JSON-API: Jeder Controller gibt die Daten seiner Seite an die View, die sie als `data`-Attribut in die HTML-Seite einbettet. Alle Interaktionen (Auswahl, Zoom, Tooltip, Schwellenwert) laufen danach im Browser.
 
 ```text
 app/
-  controllers/
-    visualizations_controller.rb
-  javascript/
-    application.js
-    network/
-      Network.js
-      main.js
-  views/
-    visualizations/
-      network.html.erb
-  assets/
-    stylesheets/
-      network.css
-
-config/
-  database.yml
-  importmap.rb
-  routes.rb
+  controllers/        NetworksController, TopicMapsController, CombinedViewsController
+  models/             SciPort-Modelle: Facility, Person, Role, ResearchProject, Publication, Authorship
+  models/analysis/    Ergebnisse der Analyse: Run, Projection, Similarity, Clustering, ClusterAssignment, Topic
+  models/visualization/  Fachlogik der Seiten: NetworkGraph, TopicMap, SimilarityGraph
+  views/              Layout, je Seite index.html.erb, Teilvorlagen in shared/ und topic_maps/
+  javascript/         page.js (Einstieg), network_view.js, topic_map_view.js, bar_chart.js,
+                      topic_cards.js, similarity_slider.js, selection_state.js,
+                      detail_panel.js, search_box.js, legend.js
+  assets/stylesheets/ application.css und je Seite bzw. Komponente eine eigene Datei
+lib/
+  analysis/           Runner und die Rechenschritte der Analyse
+  tasks/              Rake-Tasks für Datenimport und Analyse
+db/migrate/           SciPort-Schema und Analyse-Tabellen
 ```
 
-Die tatsächliche Verzeichnisstruktur kann im Laufe der Entwicklung erweitert werden.
+**Auswahl über alle Ansichten:** `SelectionState` hält die aktuelle Auswahl (Person, Einrichtung, Kante oder Thema) und benachrichtigt alle Komponenten der Seite (Beobachter-Muster). Dadurch heben Netzwerk, Themenkarte, Balkendiagramm und Detailbereich immer dieselben Personen hervor.
 
-## 4. Voraussetzungen
+**Analyse-Tabellen:** Sie beginnen mit `analysis_` und liegen neben den SciPort-Tabellen. Auf die SciPort-Tabellen greift die Anwendung nur lesend zu; Fremdschlüssel gibt es nur zwischen den Analyse-Tabellen.
 
-Für die lokale Entwicklung werden benötigt:
+## 3. Voraussetzungen
 
-- Ruby und Bundler
-- PostgreSQL
-- Git
-- Ein kompatibler Webbrowser
-- Zugriff auf die benötigte SciPort-Datenbank beziehungsweise eine geeignete Entwicklungsdatenbank
+- Ruby 4.0.6 mit Bundler
+- PostgreSQL 17, lokal erreichbar unter `127.0.0.1:5432`, Benutzer `postgres`
+- Zugang zur Webservice-Schnittstelle von SciPort RLP (nur für den einmaligen Datenimport)
 
-## 5. Lokale Installation
-
-Repository klonen:
+## 4. Installation
 
 ```powershell
-git clone <GITLAB-REPOSITORY-URL>
+git clone <REPOSITORY-URL>
 cd sciport_visualization
-```
-
-Ruby-Abhängigkeiten installieren:
-
-```powershell
 bundle install
 ```
 
-Die PostgreSQL-Datenbank muss vor dem Start verfügbar sein.
+### Datenbank-Passwort
 
-**Hinweis:** Die Anwendung setzt gegebenenfalls vorhandene Forschungsdaten und Datenbankstrukturen voraus. Eine neue, leere Datenbank ersetzt diese Daten nicht.
-
-## 6. PostgreSQL-Konfiguration
-
-Die Datenbankverbindung wird in `config/database.yml` konfiguriert.
-
-Für die lokale Entwicklungsumgebung werden folgende Parameter verwendet:
-
-```yaml
-default: &default
-  adapter: postgresql
-  encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: 127.0.0.1
-  port: 5432
-  username: postgres
-  password: <%= ENV["POSTGRES_PASSWORD"] %>
-
-development:
-  <<: *default
-  database: sciport_visualization_development
-
-test:
-  <<: *default
-  database: sciport_visualization_test
-```
-
-Die bestehende Produktionskonfiguration wird separat beibehalten.
-
-### Passwort sicher bereitstellen
-
-Das PostgreSQL-Passwort wird nicht im Quellcode gespeichert, sondern über die Umgebungsvariable `POSTGRES_PASSWORD` bereitgestellt.
-
-Unter Windows PowerShell:
-
-```powershell
-$securePassword = Read-Host "PostgreSQL-Passwort eingeben" -AsSecureString
-$env:POSTGRES_PASSWORD = [System.Net.NetworkCredential]::new("", $securePassword).Password
-```
-
-Das Passwort wird bei der Eingabe verdeckt. Die Umgebungsvariable gilt für die aktuelle PowerShell-Sitzung und Prozesse, die daraus gestartet werden.
-
-**Sicherheitshinweise:**
-
-- Keine Passwörter in Git committen.
-- Keine Zugangsdaten in README-Dateien oder Screenshots veröffentlichen.
-- Keine produktiven Zugangsdaten für lokale Tests verwenden, sofern getrennte Konten verfügbar sind.
-- Lokale Geheimnisse nicht in öffentlich zugänglichen Dateien speichern.
-
-### Datenbankverbindung überprüfen
-
-```powershell
-ruby bin/rails runner "puts ActiveRecord::Base.connection.select_value('SELECT current_database()')"
-```
-
-Bei erfolgreicher Verbindung mit der konfigurierten Entwicklungsdatenbank erscheint:
+Das Passwort steht nicht im Quellcode. `config/database.yml` liest es aus der Umgebungsvariable `POSTGRES_PASSWORD`, die `dotenv-rails` beim Start aus der Datei `.env` im Projektordner lädt:
 
 ```text
-sciport_visualization_development
+POSTGRES_PASSWORD=<Passwort des Benutzers postgres>
 ```
 
-**Achtung:** Befehle wie `db:drop`, `db:reset` oder `db:setup` dürfen nicht unüberlegt auf Datenbanken mit vorhandenen Forschungsdaten angewendet werden.
+Die Datei `.env` ist in `.gitignore` eingetragen und darf weder committet noch weitergegeben werden.
+
+### Datenbank anlegen
+
+```powershell
+ruby bin/rails db:create
+ruby bin/rails db:migrate
+```
+
+Die Migrationen legen das SciPort-Schema (`CreateSciportSchema`) und die Analyse-Tabellen (`CreateAnalysisTables`) an.
+
+## 5. Daten übernehmen (einmalig)
+
+Für Entwicklung und Evaluation wird die Datenbank einmalig über die Webservice-Schnittstelle von SciPort RLP befüllt. Die Reihenfolge ist wichtig, weil Projekte und Publikationen auf Personen und Einrichtungen verweisen:
+
+```powershell
+ruby bin/rails facilities:import
+ruby bin/rails people:import
+ruby bin/rails research_projects:import
+ruby bin/rails publications:import
+```
+
+Jeder Datensatz behält seine SciPort-Kennung (`external_id`); ein erneuter Import aktualisiert vorhandene Datensätze. Nach der Integration in SciPort RLP arbeitet das Modul direkt auf der Datenbank des Portals, und diese Tasks werden nicht mehr gebraucht.
+
+## 6. Thematische Analyse
+
+Themenkarte und kombinierte Ansicht lesen nur vorberechnete Ergebnisse. Die Berechnung läuft getrennt von den Seitenaufrufen:
+
+```powershell
+ruby bin/rails analysis:run      # vollständiger Lauf
+ruby bin/rails analysis:status   # die letzten zehn Läufe mit Status und Dauer
+```
+
+`analysis:run` startet `Analysis::Runner`, der diese Schritte nacheinander ausführt:
+
+| Schritt | Klasse | Ergebnis |
+|---|---|---|
+| 1 | `TextCollector` | je Person ein Text aus Projekten, Publikationen und Forschungsgebiet |
+| 2 | `Vectorizer` | TF-IDF-Vektoren (bis 8.000 Begriffe, Stoppwörter Deutsch/Englisch, Pluralformen zusammengeführt) |
+| 3 | `Reducer` | Reduktion auf 50 Dimensionen (randomisierte Singulärwertzerlegung) |
+| 4 | `Projector` | 2D-Projektionen mit PCA, t-SNE und UMAP |
+| 5 | `SimilarityCalculator` | Kosinus-Ähnlichkeiten, je Person die zehn ähnlichsten ab 0,5 |
+| 6 | `Clusterer` | k-Means (k = 4, 6, 8, 10, 12, 15, 20) und DBSCAN (eps aus den Daten, min_pts = 5 und 10) |
+| 7 | `TopicNamer` | kennzeichnende Begriffe je Cluster (klassenbasiertes TF-IDF) |
+
+Alle Ergebnisse werden am Ende in einer Datenbanktransaktion gespeichert. Ein fehlgeschlagener Lauf hinterlässt keine Teilergebnisse; die Seiten zeigen dann weiter den letzten erfolgreichen Lauf. Erhalten bleiben die drei jüngsten erfolgreichen Läufe. Ein zweiter Start, während ein Lauf aktiv ist, bricht mit Exit-Code 2 ab.
+
+Beim vorliegenden Datenbestand (2.895 Personen mit Texten) dauert ein Lauf etwa 5 Minuten.
+
+### Regelmäßige Ausführung
+
+Linux (cron), täglich um 3 Uhr:
+
+```text
+0 3 * * * cd /srv/sciport-visualization && RAILS_ENV=production bin/rails analysis:run >> log/analysis.log 2>&1
+```
+
+Windows (Aufgabenplanung):
+
+```powershell
+schtasks /Create /TN "SciPort Analyse" /SC DAILY /ST 03:00 /TR "cmd /c cd /d C:\Projects\sciport_visualization && ruby bin/rails analysis:run >> log\analysis.log 2>&1"
+```
 
 ## 7. Anwendung starten
-
-In einer PowerShell-Sitzung, in der `POSTGRES_PASSWORD` gesetzt ist:
 
 ```powershell
 ruby bin/rails server
 ```
 
-Die Anwendung ist standardmäßig unter folgenden Adressen erreichbar:
+Danach im Browser `http://localhost:3000` öffnen. Ohne abgeschlossenen Analyselauf zeigen Themenkarte und kombinierte Ansicht einen Hinweis; die Netzwerkseite funktioniert auch ohne Analyse.
 
-- http://localhost:3000
-- http://localhost:3000/network
+Die Fußzeile zeigt den Zeitpunkt des jüngsten abgeschlossenen Analyselaufs.
 
-## 8. Forschungsnetzwerk
+## 8. Bedienung
 
-Die Netzwerkvisualisierung wird über den Controller `VisualizationsController` bereitgestellt.
-
-Zentrale Bestandteile:
-
-- `Network.js`: D3-basierte Netzwerkdarstellung
-- `main.js`: Initialisierung und Benutzerinteraktionen
-- `network.html.erb`: HTML-Ansicht
-- `network.css`: Darstellung und Layout
-
-Die Visualisierung berücksichtigt Personen und Forschungseinrichtungen. Die Darstellung hierarchischer Einrichtungsstrukturen und die zugehörigen Interaktionen sind Teil der weiteren Entwicklung und Überprüfung.
+- **Suche:** Personen und Einrichtungen; die Wahl eines Vorschlags wählt das Element aus.
+- **Zoom:** Mausrad oder Knöpfe +, − und ⌂. Das Netzwerk zeigt je nach Zoomstufe Hochschulen (Stufe 1), zusätzlich Fachbereiche (Stufe 2) und zusätzlich Personen (Stufe 3).
+- **Auswahl:** Klick auf ein Symbol, eine Kante, eine Themenkarte oder einen Eintrag im Detailbereich. „Zurücksetzen“ hebt die Auswahl auf.
+- **Themenkarte:** Projektion und Clusterverfahren im Formular über der Karte wählen. Die Wahl gilt auch für die kombinierte Ansicht.
+- **Kombinierte Ansicht:** Der Regler legt fest, ab welcher Ähnlichkeit thematische Kanten im Netzwerk erscheinen.
+- **Legende:** Schaltfläche „ⓘ Legende“ unten auf jeder Seite.
 
 ## 9. Entwicklungsstand
 
-**Aktueller Stand: Oktober 2026**
+**Stand: November 2026**
 
-- Rails-Anwendung startet lokal.
-- PostgreSQL-Verbindung zur Entwicklungsdatenbank wurde erfolgreich getestet.
-- Die Netzwerkroute `/network` ist eingerichtet.
-- Die JavaScript-Einstiegspunkte und Importmap-Konfiguration wurden überprüft.
-- Die sichtbare Darstellung des Forschungsnetzwerks ist noch Gegenstand der Fehlersuche.
-- Weitere Visualisierungs- und Evaluationsschritte folgen.
+Umgesetzt:
 
-Dieser Abschnitt wird mit dem Projektfortschritt aktualisiert.
+- alle drei Seiten mit gemeinsamer Auswahl, Suche, Detailbereich und Legende
+- Netzwerk als Galaxie-Layout mit drei Zoomstufen, Kooperationskanten und Sammelkanten
+- Themenkarte mit drei Projektionen, zwei Clusterverfahren und Themenübersicht
+- kombinierte Ansicht mit Ähnlichkeitskanten, Schwellenwert-Regler und Balkendiagramm für Projekte und Publikationen
+- vollständige Analyse in Ruby mit nächtlicher Ausführung
 
-## 10. Versionsverwaltung
+Offen:
 
-Das Projekt wird mit Git versioniert. Für die weitere Entwicklung wird **GitLab als primäres Arbeitsrepository** verwendet.
+- automatisierte Tests (Ordner `test/` noch ohne eigene Tests)
+- Suche und Auswahl für Projekte, Publikationen, Schlagwörter und Themen
+- Tooltip der Themenkarte mit Einrichtung und Kennzahlen
+- „Zurücksetzen“ auch für Zoom und Parameter
 
-GitHub kann als zusätzlicher Repository-Standort bestehen bleiben. Änderungen werden nicht automatisch zwischen beiden Plattformen synchronisiert.
+## 10. Sicherheit und Daten
 
-Vor einem Push werden der aktuelle Branch, das Ziel-Remote und die zu übertragenden Dateien überprüft.
+- Zugangsdaten (Datenbank, SciPort-Webservice) gehören in `.env` bzw. Umgebungsvariablen, nicht in den Quellcode, in Commits oder in Screenshots.
+- Die Daten stammen aus SciPort RLP und enthalten personenbezogene Angaben. Die Veröffentlichung des Quellcodes bedeutet nicht, dass diese Daten veröffentlicht werden dürfen.
+- `db:drop`, `db:reset` und `db:setup` löschen alle importierten Daten; der Import dauert danach erneut.
 
-## 11. Wissenschaftlicher Kontext
+## 11. Wissenschaftlicher Kontext und Lizenz
 
-Die Anwendung wird im Rahmen einer Masterarbeit entwickelt. Architekturentscheidungen, Visualisierungskonzepte, Implementierungsschritte und Evaluation werden in der schriftlichen Arbeit dokumentiert.
-
-## 12. Datenschutz und Forschungsdaten
-
-Forschungsdaten, Zugangsdaten und gegebenenfalls personenbezogene Informationen sind entsprechend den geltenden organisatorischen und datenschutzrechtlichen Anforderungen zu behandeln.
-
-Die Veröffentlichung des Quellcodes bedeutet nicht automatisch, dass zugrunde liegende Forschungsdaten veröffentlicht werden dürfen.
-
-## 13. Lizenz
-
-Die Lizenzierung und mögliche Veröffentlichung des Projekts sind vor einer öffentlichen Freigabe mit den zuständigen Stellen zu klären.
+Entwurf, Umsetzung und Evaluation sind in der Masterarbeit beschrieben (Kapitel 4 bis 6). Lizenz und eine mögliche Veröffentlichung sind vor einer öffentlichen Freigabe mit der Hochschule Worms und den Betreibern von SciPort RLP zu klären.

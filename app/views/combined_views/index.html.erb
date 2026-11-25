@@ -1,0 +1,130 @@
+<%#
+  ============================================================
+  Datei: app/views/combined_views/index.html.erb
+
+  Desc:
+    Seite "Kombinierte Ansicht" (UC 4: Thema auswählen,
+    UC 5: Schwellenwert ändern; FA30–FA35).
+
+    Aufbau (FA30):
+      oben       Suche und Schwellenwert-Regler
+      links      Netzwerk mit Ähnlichkeitskanten,
+                 darunter das Balkendiagramm
+      Mitte      Themenkarte, darunter die Themenkarten
+      rechts     Infobereich zur Auswahl
+
+    Eine Auswahl in einer Teilansicht wirkt in allen
+    Teilansichten (FA33): page.js verbindet sie über einen
+    gemeinsamen SelectionState.
+
+    Daten (CombinedViewsController), als data-Attribute
+    eingebettet:
+      data-network     Visualization::NetworkGraph#to_h
+      data-topic-map   Visualization::TopicMap#to_h
+      data-similarity  Visualization::SimilarityGraph#to_h
+
+    Die Teilansichten finden ihre Elemente innerhalb ihres
+    Panels (data-network-panel, data-topic-panel), weil
+    Tooltip und Zoomknöpfe zweimal vorkommen.
+
+    Ohne fertigen Analyselauf erscheint nur ein Hinweis.
+  ============================================================
+%>
+<% content_for :title, "Kombinierte Ansicht" %>
+
+<% if @topic_map[:available] %>
+  <%
+    selection = @topic_map[:selection]
+    method_label = { "pca" => "PCA", "tsne" => "t-SNE", "umap" => "UMAP" }.fetch(selection[:projection_method])
+    clustering_label = if selection[:algorithm] == "kmeans"
+      "k-Means, k = #{selection[:k]}"
+    else
+      "DBSCAN, eps = #{selection[:eps]}, min_pts = #{selection[:min_pts]}"
+    end
+  %>
+
+  <%= tag.div class: "page", data: { page: "combined",
+                                     network: @network_data,
+                                     topic_map: @topic_map,
+                                     similarity: @similarity } do %>
+    <h1 class="hd">Kombinierte Ansicht</h1>
+    <p class="sub">
+      Kooperationen und thematische Ähnlichkeit gemeinsam.
+      Verfahren: <%= method_label %> · <%= clustering_label %>
+      (<%= link_to "auf der Themenkarte ändern", topic_maps_path %>)
+    </p>
+
+    <%= render "shared/search", placeholder: "Person oder Einrichtung suchen …" %>
+
+    <%# Schwellenwert-Regler für die Ähnlichkeitskanten (FA32) %>
+    <section class="panel similarity-bar" data-similarity-slider aria-label="Schwellenwert">
+      <label for="similarity-threshold">Thematische Ähnlichkeit mindestens</label>
+      <input type="range" id="similarity-threshold"
+             min="<%= @similarity[:min] %>" max="<%= @similarity[:max] %>"
+             step="0.001" value="<%= @similarity[:threshold] %>">
+      <output data-similarity-value></output>
+      <span class="count" data-similarity-count></span>
+      <span class="hint">Höherer Wert = weniger Kanten. Die Kanten erscheinen zwischen sichtbaren Personen (Stufe 3) und immer für eine ausgewählte Person.</span>
+    </section>
+
+    <div class="combined-layout">
+      <%# Netzwerk mit Zoomsteuerung und Tooltip %>
+      <section class="panel graph-panel network-cell" data-network-panel aria-label="Netzwerk">
+        <svg class="graph" data-network-view role="img"
+             aria-label="Netzwerk mit thematisch ähnlichen Personen"></svg>
+
+        <div class="zc" data-zoom-controls>
+          <span data-zoom-level></span>
+          <button type="button" data-zoom="in" title="Vergrößern">+</button>
+          <button type="button" data-zoom="out" title="Verkleinern">−</button>
+          <button type="button" data-zoom="home" title="Gesamtansicht">⌂</button>
+        </div>
+
+        <div class="tip" data-tooltip></div>
+      </section>
+
+      <%# Themenkarte mit Zoomsteuerung und Tooltip %>
+      <section class="panel graph-panel topic-cell" data-topic-panel aria-label="Themenkarte">
+        <svg class="graph" data-topic-map-view role="img"
+             aria-label="Personen nach Forschungsthemen"></svg>
+
+        <div class="zc" data-zoom-controls>
+          <span data-zoom-level></span>
+          <button type="button" data-zoom="in" title="Vergrößern">+</button>
+          <button type="button" data-zoom="out" title="Verkleinern">−</button>
+          <button type="button" data-zoom="home" title="Gesamtansicht">⌂</button>
+        </div>
+
+        <div class="tip" data-tooltip></div>
+      </section>
+
+      <%= render "shared/detail_panel" %>
+
+      <%# Balkendiagramm: Projekte und Publikationen pro Person (FA34) %>
+      <section class="panel bar-panel bar-cell" aria-label="Projekte und Publikationen pro Person">
+        <h2 class="pt">Projekte und Publikationen pro Person</h2>
+        <p class="hint" data-bar-chart-hint>Alle Personen</p>
+        <p class="bar-key"><span>Projekte</span><span class="key-publications">Publikationen</span></p>
+        <svg class="bar-chart" data-bar-chart width="100%"></svg>
+      </section>
+
+      <%# Themenkarten: Klick wählt das Thema in allen Ansichten aus %>
+      <section class="panel topics-panel topics-cell" aria-label="Themen">
+        <h2 class="pt">Themen</h2>
+        <p class="hint">Klick wählt das Thema in allen Ansichten aus</p>
+        <div class="topic-cards" data-topic-cards></div>
+      </section>
+    </div>
+
+    <%= render "shared/legend", network: true, clusters: true, similarity: true %>
+  <% end %>
+<% else %>
+  <h1 class="hd">Kombinierte Ansicht</h1>
+  <section class="panel empty-state">
+    <p>
+      Es liegt noch kein fertiger Analyselauf vor. Die Analyse
+      läuft nachts automatisch, von Hand startest du sie mit
+      <code>ruby bin/rails analysis:run</code>.
+    </p>
+  </section>
+<% end %>

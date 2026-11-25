@@ -1,11 +1,36 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# ============================================================
+# Datei: test/fixtures/facilities.yml
+#
+# Kleines Testnetz mit zwei Hochschulen und je einem
+# Fachbereich (Stufe 1 und Stufe 2 des Netzwerks).
+#
+#   hs_worms ── fb_informatik
+#   uni_mainz ── fb_physik ── institut_optik (Stufe 3)
+# ============================================================
+hs_worms:
+  external_id: "F-1"
+  name: Hochschule Worms
+  facility_type: Fachhochschule
 
-one:
-  name: MyString
-  facility_type: MyString
-  parent: one
+fb_informatik:
+  external_id: "F-2"
+  name: Fachbereich Informatik
+  facility_type: Fachbereich
+  parent: hs_worms
 
-two:
-  name: MyString
-  facility_type: MyString
-  parent: two
+uni_mainz:
+  external_id: "F-3"
+  name: Universität Mainz
+  facility_type: Universität
+
+fb_physik:
+  external_id: "F-4"
+  name: Fachbereich Physik
+  facility_type: Fachbereich
+  parent: uni_mainz
+
+institut_optik:
+  external_id: "F-5"
+  name: Institut für Optik
+  facility_type: Institut
+  parent: fb_physik

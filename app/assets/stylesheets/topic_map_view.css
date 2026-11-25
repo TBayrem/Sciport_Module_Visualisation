@@ -1,0 +1,123 @@
+/* ============================================================
+   Datei: app/assets/stylesheets/topic_map_view.css
+   Gehört zu: app/javascript/topic_map_view.js
+
+   Desc:
+     Personensymbole, Clusterhüllen und Clusterbeschriftungen
+     der Themenkarte. Die Farbklassen topic-0 … topic-19 und
+     noise setzen nur color; Symbole (<use>), Hüllen, Farbfelder
+     der Themenkarten und die Legende übernehmen die Farbe über
+     currentColor.
+
+     Größen (Symbol, Hüllenrand, Schrift) setzt topic_map_view.js
+     als SVG-Attribute, weil sie vom Zoom abhängen. Dieses
+     Stylesheet setzt deshalb keine width, stroke-width oder
+     font-size für diese Elemente: CSS hätte Vorrang vor den
+     Attributen.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Farben der Themen: 20 gut unterscheidbare Töne, zuerst die
+   kräftigen, danach hellere bzw. dunklere Varianten.
+   ------------------------------------------------------------ */
+
+.topic-0  { color: #1f77b4; }
+.topic-1  { color: #d62728; }
+.topic-2  { color: #2ca02c; }
+.topic-3  { color: #ff7f0e; }
+.topic-4  { color: #9467bd; }
+.topic-5  { color: #17becf; }
+.topic-6  { color: #e377c2; }
+.topic-7  { color: #8c564b; }
+.topic-8  { color: #bcbd22; }
+.topic-9  { color: #393b79; }
+.topic-10 { color: #6baed6; }
+.topic-11 { color: #ff9896; }
+.topic-12 { color: #74c476; }
+.topic-13 { color: #fdae6b; }
+.topic-14 { color: #c5b0d5; }
+.topic-15 { color: #0e7c86; }
+.topic-16 { color: #ad494a; }
+.topic-17 { color: #637939; }
+.topic-18 { color: #b5651d; }
+.topic-19 { color: #7b4173; }
+
+/* Rauschen (DBSCAN): keinem Thema zugeordnet */
+.noise { color: #b4b2a9; }
+
+/* ------------------------------------------------------------
+   Personensymbole
+   ------------------------------------------------------------ */
+
+.point {
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.point:hover { filter: drop-shadow(0 0 2px var(--accent)); }
+
+/* Auswahl: nicht betroffene Personen werden blass */
+.point.dimmed { opacity: 0.12; }
+.point.selected { filter: drop-shadow(0 0 3px var(--text)); }
+
+/* Themenkarte unter der Maus: andere Cluster treten zurück */
+.point.muted { opacity: 0.08; }
+.point.dimmed.muted { opacity: 0.05; }
+
+/* ------------------------------------------------------------
+   Clusterhüllen
+   ------------------------------------------------------------ */
+
+/* Fläche und breiter, abgerundeter Rand in Clusterfarbe; der
+   Rand wirkt wie ein Abstand um die äußeren Personen. */
+.cluster-hull {
+  fill: currentColor;
+  fill-opacity: 0.08;
+  stroke: currentColor;
+  stroke-opacity: 0.08;
+  stroke-linejoin: round;
+  cursor: zoom-in;
+  transition: fill-opacity 0.15s, stroke-opacity 0.15s;
+}
+
+.cluster-hull:hover {
+  fill-opacity: 0.16;
+  stroke-opacity: 0.16;
+}
+
+.cluster-hull.muted {
+  fill-opacity: 0.02;
+  stroke-opacity: 0.02;
+}
+
+/* Bei einer Auswahl treten die Hüllen zurück, außer der
+   Hülle des ausgewählten Themas */
+.has-selection .cluster-hull {
+  fill-opacity: 0.04;
+  stroke-opacity: 0.04;
+}
+
+.has-selection .cluster-hull.active {
+  fill-opacity: 0.18;
+  stroke-opacity: 0.18;
+}
+
+/* ------------------------------------------------------------
+   Clusterbeschriftungen
+   ------------------------------------------------------------ */
+
+/* Text in Clusterfarbe mit weißem Rand (paint-order), damit er
+   über den Symbolen lesbar bleibt. Klicks gehen durch. */
+.cluster-label {
+  fill: currentColor;
+  stroke: #fff;
+  stroke-linejoin: round;
+  paint-order: stroke;
+  font-weight: 700;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+.cluster-label.muted { opacity: 0.15; }
+.has-selection .cluster-label { opacity: 0.35; }
+.has-selection .cluster-label.active { opacity: 1; }

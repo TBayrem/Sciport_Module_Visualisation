@@ -1,13 +1,9 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  title: MyString
-  abstract: MyText
-  publication_year: 1
-  doi: MyString
-
-two:
-  title: MyString
-  abstract: MyText
-  publication_year: 1
-  doi: MyString
+# ============================================================
+# Datei: test/fixtures/publications.yml
+# ============================================================
+pub_graph:
+  external_id: "B-1"
+  title: Graphbasierte Analyse von Kooperationen
+  abstract: Eine Untersuchung von Kooperationsnetzwerken.
+  publication_year: 2025
+  doi: 10.1000/test.1

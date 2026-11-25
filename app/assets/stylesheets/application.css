@@ -1,10 +1,275 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+/* ============================================================
+   Datei: app/assets/stylesheets/application.css
+   Gehört zu: app/views/layouts/application.html.erb
+
+   Desc:
+     Grundlage aller Seiten: Farbvariablen, Grundlayout
+     (Kopfzeile, Navigation, Inhalt, Fußzeile), Formular-
+     elemente, Panels sowie die Bedienelemente, die jede
+     Grafik verwendet (Zoomknöpfe, Tooltip, Auswahlring).
+
+     Aufteilung der Stylesheets (wie app/views und
+     app/javascript):
+       application.css            Layout und Gemeinsames
+       networks/index.css         Seite "Netzwerk"
+       shared/search.css          _search + search_box.js
+       shared/detail_panel.css    _detail_panel + detail_panel.js
+       shared/legend.css          _legend + legend.js
+       network_view.css           network_view.js
+       bar_chart.css              bar_chart.js
+
+     Das Layout bindet alle Dateien in dieser Reihenfolge ein.
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1. Variablen
+   ------------------------------------------------------------ */
+
+:root {
+  /* Flächen und Text */
+  --surface-muted: #f7f6f3;
+  --text: #1f1e1d;
+  --text-secondary: #5f5e5a;
+  --text-muted: #888780;
+  --accent: #0c447c;
+  --accent-bg: #e6f1fb;
+  --border: rgba(31, 30, 29, 0.15);
+  --border-strong: rgba(31, 30, 29, 0.3);
+  --radius: 8px;
+}
+
+
+/* ------------------------------------------------------------
+   2. Grundlayout
+   ------------------------------------------------------------ */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--text);
+  font-family: "DejaVu Sans", Arial, sans-serif;
+  font-size: 13px;
+}
+
+/* Raster: Kopfzeile oben, Navigation links, Inhalt rechts,
+   Fußzeile unten. Die App ist genau so hoch wie das Fenster;
+   die Seite selbst scrollt nicht. */
+.app {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100vh;
+}
+
+.topbar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 0.5px solid var(--border);
+  background: #fff;
+}
+
+.topbar .lg { font-weight: 700; font-size: 15px; color: var(--accent); }
+.topbar .tt { color: var(--text-secondary); }
+.topbar .rt { margin-left: auto; font-size: 12px; color: var(--text-muted); }
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 8px 12px;
+  background: var(--surface-muted);
+}
+
+.nav {
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.nav:hover { background: #eeede9; }
+.nav.on { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+
+/* Inhalt als Spalte: feste Elemente oben und unten,
+   die Grafik füllt den Rest. */
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 14px 16px 12px;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.foot {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 18px;
+  padding: 8px 16px;
+  border-top: 0.5px solid var(--border);
+  background: var(--surface-muted);
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+
+.foot .credit { margin-left: auto; }
+
+/* Sehr niedrige Fenster (z. B. Laptop mit Zoom): dann darf
+   die Seite wieder scrollen, damit die Grafik nicht zu klein wird. */
+@media (max-height: 650px) {
+  .app { height: auto; min-height: 100vh; }
+}
+
+
+/* ------------------------------------------------------------
+   3. Formularelemente und Knöpfe
+   ------------------------------------------------------------ */
+
+input,
+select,
+button {
+  font: inherit;
+  color: var(--text);
+  background: #fff;
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--radius);
+}
+
+select {
+  height: 32px;
+  padding: 0 8px;
+}
+
+button {
+  height: 32px;
+  padding: 0 14px;
+  background: #cfe0f7;
+  border-color: #b5d4f4;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+input[type="range"] { accent-color: var(--accent); }
+
+
+/* ------------------------------------------------------------
+   4. Seitenelemente
+   ------------------------------------------------------------ */
+
+.hd  { margin: 0; font-size: 22px; font-weight: 600; }
+.sub { margin: 2px 0 0; color: var(--text-secondary); }
+.pt  { margin: 0; font-size: 14px; font-weight: 600; }
+.lbl { font-size: 12px; color: var(--text-secondary); }
+
+.hint {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.muted { color: var(--text-secondary); }
+
+.panel {
+  min-width: 0;
+  padding: 10px 12px;
+  background: #fff;
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+}
+
+
+/* ------------------------------------------------------------
+   5. Grafikfläche (gemeinsam für alle Grafiken)
+   ------------------------------------------------------------ */
+
+/* Panel mit Grafik; position: relative für Zoomknöpfe und Tooltip */
+.graph-panel {
+  position: relative;
+  min-height: 0;
+  padding: 6px;
+}
+
+/* Die SVG-Grafik füllt das Panel vollständig aus. */
+svg.graph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+}
+
+svg.graph:active { cursor: grabbing; }
+
+/* Zoomknöpfe unten rechts mit Anzeige der Zoomstufe */
+.zc {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 4;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.zc button {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1;
+  background: #fff;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.zc span {
+  margin-right: 2px;
+  padding: 3px 7px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.zc span:empty { display: none; }
+
+/* Tooltip; die Grafiken setzen Position und Klasse "open" */
+.tip {
+  position: absolute;
+  z-index: 5;
+  display: none;
+  min-width: 140px;
+  padding: 6px 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--accent);
+  background: #fff;
+  border: 1px solid var(--text);
+  border-radius: var(--radius);
+  pointer-events: none;
+}
+
+.tip.open { display: block; }
+
+/* Auswahlring um ein ausgewähltes Symbol */
+.selection-ring {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 2.5;
+}

@@ -1,11 +1,25 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# ============================================================
+# Datei: test/fixtures/roles.yml
+#
+# Zugehörigkeit der Personen zu Einrichtungen. Anna hat zwei
+# Rollen in verschiedenen Hochschulen (FA12). Dirk hat keine.
+# ============================================================
+anna_informatik:
+  person: anna
+  facility: fb_informatik
+  description: Professorin
 
-one:
-  person: one
-  facility: one
-  name: MyString
+anna_physik:
+  person: anna
+  facility: fb_physik
+  description: Kooperationspartnerin
 
-two:
-  person: two
-  facility: two
-  name: MyString
+ben_informatik:
+  person: ben
+  facility: fb_informatik
+  description: Wissenschaftlicher Mitarbeiter
+
+carla_optik:
+  person: carla
+  facility: institut_optik
+  description: Leiterin

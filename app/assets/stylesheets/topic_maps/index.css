@@ -1,0 +1,100 @@
+/* ============================================================
+   Datei: app/assets/stylesheets/topic_maps/index.css
+   Gehört zu: app/views/topic_maps/index.html.erb
+              app/views/topic_maps/_parameters.html.erb
+
+   Desc:
+     Raster der Seite "Themenkarte": Parameterleiste oben,
+     darunter die Punktwolke links und der Infobereich rechts,
+     unten die Themenkarten. Die Punktwolke nimmt die gesamte
+     freie Höhe ein (wie die Grafik der Netzwerkseite).
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Raster
+   ------------------------------------------------------------ */
+
+.topic-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Themenkarten mit fester Höhe; weitere Karten scrollen
+   innerhalb des Panels. */
+.topics-panel {
+  flex: none;
+  max-height: 180px;
+  margin-top: 10px;
+  overflow-y: auto;
+}
+
+.topics-panel .hint { margin-bottom: 8px; }
+
+/* Hinweis, solange kein Analyselauf fertig ist */
+.empty-state {
+  max-width: 640px;
+  margin-top: 12px;
+}
+
+.empty-state code {
+  padding: 1px 5px;
+  background: var(--surface-muted);
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------
+   Parameterleiste (_parameters)
+   ------------------------------------------------------------ */
+
+.parameters {
+  flex: none;
+  margin: 10px 0;
+  padding: 8px 12px;
+}
+
+.parameters form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 22px;
+}
+
+.parameters fieldset {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* hidden muss gegen display: flex gewinnen */
+.parameters fieldset[hidden] { display: none; }
+
+.parameters legend {
+  float: left;
+  margin-right: 4px;
+  padding: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.parameters label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.parameters input[type="radio"] {
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+/* Niedrige Fenster: Mindesthöhe für die Punktwolke. */
+@media (max-height: 650px) {
+  .topic-layout { min-height: 420px; }
+}
