@@ -15,7 +15,7 @@ source "https://rubygems.org"
 # ============================================================
 
 # Rails 8.1
-gem "rails", "~> 8.1.3", ">= 8.1.3.1"
+gem "rails", "~> 8.1.4"
 
 # Moderne Asset-Pipeline
 gem "propshaft"
