@@ -7,8 +7,8 @@ namespace :facilities do
     BASE_URL = "https://www.rlp-forschung.de".freeze
     FACILITIES_URL = "#{BASE_URL}/facilities.xml".freeze
 
-    USERNAME = "Trabelsi"
-    PASSWORD = "!dpsVT67fsTB)"
+USERNAME = ENV.fetch("SCIPORT_USERNAME")
+PASSWORD = ENV.fetch("SCIPORT_PASSWORD")
 
     class FacilityImporter
       XML_NAMESPACE = "https://www.rlp-forschung.de/ws/1_0".freeze

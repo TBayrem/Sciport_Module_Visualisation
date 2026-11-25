@@ -4,16 +4,16 @@ namespace :people do
     require "net/http"
     require "nokogiri"
     require "uri"
-    
-    USERNAME = "Trabelsi"
-    PASSWORD = "!dpsVT67fsTB)"
-    
+
+USERNAME = ENV.fetch("SCIPORT_USERNAME")
+PASSWORD = ENV.fetch("SCIPORT_PASSWORD")
+
     class PeopleImporter
       BASE_URL = "https://www.rlp-forschung.de".freeze
       PEOPLE_RANGE = 1..8410
       XML_NAMESPACE = "https://www.rlp-forschung.de/ws/1_0".freeze
       XLINK_NAMESPACE = "http://www.w3.org/1999/xlink".freeze
-            
+
       def initialize(username:, password:)
         @username = username
         @password = password
