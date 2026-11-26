@@ -1,5 +1,7 @@
 # SciPort Visualization
 
+**Webseite mit Prototyp zum Ausprobieren:** https://tbayrem.github.io/sciport-visualisierungsmodul/
+
 **Visualisierungsmodul für SciPort RLP: Kooperationen und Forschungsthemen der rheinland-pfälzischen Hochschulen**
 
 Diese Rails-Anwendung entsteht im Rahmen der Masterarbeit „Entwicklung eines produktionsreifen Visualisierungsmoduls für SciPort RLP“ (Bayrem Trabelsi, Hochschule Worms, Betreuung: Prof. Dr. Alexander Wiebel). Sie stellt die Daten des Forschungsportals SciPort RLP auf drei Seiten dar:

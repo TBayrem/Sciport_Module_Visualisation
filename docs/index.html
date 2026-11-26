@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Visualisierungsmodul für SciPort RLP</title>
+<meta name="description" content="Masterarbeit: Kooperationen und Forschungsthemen der rheinland-pfälzischen Hochschulen als interaktive Netzwerk- und Themenkarte.">
+<style>
+:root{--bg:#fafaf7;--fg:#1d2327;--mut:#5b6670;--card:#fff;--line:#dde1e5;--acc:#1f5fbf;--acc2:#e8f0fc;--ok:#1b7f4b;--warn:#b25e00;--bad:#b3261e}
+@media (prefers-color-scheme:dark){:root{--bg:#14181c;--fg:#e8ebee;--mut:#9aa6b1;--card:#1c2228;--line:#2d363e;--acc:#6aa3ff;--acc2:#1d2a3d;--ok:#4cc38a;--warn:#f0a34a;--bad:#ff8a80}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--acc)}
+header.top{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);z-index:5}
+header.top nav{max-width:980px;margin:auto;padding:10px 16px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+header.top nav b{margin-right:auto}
+header.top a{text-decoration:none;font-size:14px}
+.wrap{max-width:980px;margin:auto;padding:0 16px}
+.hero{padding:48px 0 28px}
+.hero h1{font-size:clamp(26px,4.5vw,40px);line-height:1.2;margin:0 0 10px}
+.hero p.sub{font-size:18px;color:var(--mut);margin:0 0 16px;max-width:720px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.badge{background:var(--acc2);color:var(--acc);border-radius:99px;padding:3px 12px;font-size:13px}
+.btn{display:inline-block;background:var(--acc);color:#fff;border:0;border-radius:8px;padding:9px 16px;font-size:15px;text-decoration:none;cursor:pointer}
+.btn.sec{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+section{padding:26px 0;border-top:1px solid var(--line)}
+h2{font-size:24px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card h3{margin:0 0 6px;font-size:16px}
+.note{border-left:4px solid var(--warn);background:var(--card);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+.proto{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+.proto label{font-size:14px;color:var(--mut)}
+.proto input[type=number],.proto input[type=text],.proto select,.proto textarea{background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:5px 8px;font:inherit;font-size:14px}
+.proto table{border-collapse:collapse;width:100%;font-size:14px}
+.proto th,.proto td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
+.proto button{background:var(--acc);color:#fff;border:0;border-radius:6px;padding:7px 12px;font:inherit;font-size:14px;cursor:pointer}
+.proto button.sec{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+.proto button:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.bar{height:14px;background:var(--acc);border-radius:4px;transition:width .2s}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+pre.mono{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;overflow:auto;margin:6px 0}
+ul.clean{padding-left:20px}
+footer{padding:28px 0 48px;color:var(--mut);font-size:14px;border-top:1px solid var(--line)}
+canvas{max-width:100%}
+.good{color:var(--ok)}.warnc{color:var(--warn)}.badc{color:var(--bad)}
+</style></head><body>
+<header class="top"><nav><b>SciPort Visualisierung</b><a href="#ueberblick">Überblick</a><a href="#prototyp">Prototyp</a><a href="#grenzen">Grenzen</a><a href="#unterlagen">Unterlagen</a></nav></header>
+<main class="wrap">
+<div class="hero"><h1>Visualisierungsmodul für SciPort RLP</h1><p class="sub">Masterarbeit: Kooperationen und Forschungsthemen der rheinland-pfälzischen Hochschulen als interaktive Netzwerk- und Themenkarte.</p>
+<div class="badges"><span class="badge">Masterarbeit (in Bearbeitung)</span><span class="badge">Ruby on Rails 8 · D3.js</span><span class="badge">Hochschule Worms</span></div>
+<a class="btn" href="#prototyp">Prototyp ausprobieren</a> <a class="btn sec" href="#unterlagen">Artikel und Folien</a></div>
+<section id="ueberblick"><h2>Worum geht es?</h2><p>SciPort RLP ist das Forschungsportal der Hochschulen in Rheinland-Pfalz. Die Anwendung stellt dessen Daten auf drei Seiten dar: ein <b>Netzwerk</b> aus Hochschulen, Fachbereichen und Personen mit Kooperationen über gemeinsame Projekte und Publikationen, eine <b>Themenkarte</b>, in der Forschungsprofile nach inhaltlicher Ähnlichkeit gruppiert werden, und eine <b>kombinierte Ansicht</b> mit gemeinsamer Auswahl.</p><p>Die thematische Analyse (TF-IDF, Dimensionsreduktion mit PCA, t-SNE oder UMAP, Clustering mit k-Means oder DBSCAN, Themenbeschriftung mit c-TF-IDF) ist in reinem Ruby ohne externe Bibliotheken umgesetzt und mit automatisierten Tests abgesichert.</p>
+<div class="grid" style="margin-top:14px"><div class="card"><h3>Netzwerk</h3><span>Kooperationen zwischen Hochschulen, Fachbereichen und Personen</span></div><div class="card"><h3>Themenkarte</h3><span>Forschungsprofile als 2D-Karte, gruppiert nach Themen</span></div><div class="card"><h3>Kombinierte Ansicht</h3><span>Gemeinsame Auswahl, thematische Ähnlichkeitskanten</span></div><div class="card"><h3>Technik</h3><span>Rails 8, PostgreSQL, D3.js, ES-Module ohne Build-Schritt</span></div></div></section>
+<section id="prototyp"><h2>Prototyp: Mini-Demo: Netzwerk mit Ähnlichkeitsschwelle</h2><p>Eine stark vereinfachte Veranschaulichung mit erfundenen Beispielknoten (keine echten Personen oder Daten): Knoten stehen für Forschungsprofile, Kanten für thematische Ähnlichkeit. Mit dem Regler blenden Sie schwächere Verbindungen aus, ein Klick auf einen Knoten hebt seine Nachbarn hervor. Die echte Anwendung nutzt dafür D3.js und echte Analyse-Ergebnisse.</p>
+<div class="proto"><div class="row"><label>Mindest-Ähnlichkeit <input id="sl" type="range" min="0" max="100" value="50"></label><b id="sv">0,50</b><span id="inf" class="mono"></span></div><svg id="g" viewBox="0 0 600 340" style="width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px"></svg></div></section>
+<section id="grenzen"><h2>Grenzen und Einordnung</h2><div class='note'>Die Masterarbeit ist in Bearbeitung. Diese Seite enthält deshalb keine Evaluationsergebnisse. Die Demo oben verwendet erfundene Beispielknoten und ist nicht die Anwendung selbst. Der Quellcode der Rails-Anwendung liegt im Repository, der Betrieb benötigt Ruby, PostgreSQL und Zugang zu den SciPort-Daten.</div></section>
+<section id="unterlagen"><h2>Unterlagen</h2>
+<ul class="clean"><li><a href="Artikel_SciPort_Visualisierungsmodul.pdf">Fachartikel (PDF)</a> mit Quellenangaben · <a href="Artikel_SciPort_Visualisierungsmodul.md">Markdown</a></li>
+<li><a href="SciPort_Visualisierungsmodul.pdf">Präsentation (PDF)</a></li>
+<li><a href="https://github.com/TBayrem/sciport-visualisierungsmodul">Repository auf GitHub</a></li></ul></section>
+</main>
+<footer><div class="wrap">Bayrem Trabelsi · M.Sc. Wirtschaftsinformatik, Hochschule Worms · <a href="https://github.com/TBayrem">github.com/TBayrem</a><br>Alle Knoten der Demo sind fiktiv.</div></footer>
+<script>
+
+const nodes=[];const cl=[[150,100,'#1f5fbf'],[430,90,'#b25e00'],[300,260,'#1b7f4b']];let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+cl.forEach((c,k)=>{for(let i=0;i<7;i++)nodes.push({id:nodes.length,k,x:c[0]+(rnd()-.5)*150,y:c[1]+(rnd()-.5)*110,c:c[2]})});
+const E=[];for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){const d=Math.hypot(nodes[i].x-nodes[j].x,nodes[i].y-nodes[j].y);const s=Math.max(0,1-d/260)*(nodes[i].k==nodes[j].k?1:.55);if(s>.2)E.push({a:i,b:j,s})}
+let sel=-1;const svg=document.getElementById('g'),sl=document.getElementById('sl');
+function d(){const th=sl.value/100;document.getElementById('sv').textContent=th.toFixed(2).replace('.',',');const es=E.filter(e=>e.s>=th);
+const nb=new Set();if(sel>=0)es.forEach(e=>{if(e.a==sel)nb.add(e.b);if(e.b==sel)nb.add(e.a)});
+let h='';es.forEach(e=>{const on=sel<0||e.a==sel||e.b==sel;h+='<line x1="'+nodes[e.a].x+'" y1="'+nodes[e.a].y+'" x2="'+nodes[e.b].x+'" y2="'+nodes[e.b].y+'" stroke="#8a96a3" stroke-opacity="'+(on?.8:.12)+'" stroke-width="'+(1+e.s*2)+'"/>'});
+nodes.forEach(n=>{const on=sel<0||n.id==sel||nb.has(n.id);h+='<circle data-i="'+n.id+'" cx="'+n.x+'" cy="'+n.y+'" r="9" fill="'+n.c+'" fill-opacity="'+(on?1:.2)+'" style="cursor:pointer" stroke="'+(n.id==sel?'currentColor':'none')+'" stroke-width="3"/>'});
+svg.innerHTML=h;document.getElementById('inf').textContent=es.length+' von '+E.length+' Kanten sichtbar'+(sel>=0?' · Knoten '+(sel+1)+' hat '+nb.size+' Nachbarn':'');
+svg.querySelectorAll('circle').forEach(c=>c.onclick=()=>{sel=sel==+c.dataset.i?-1:+c.dataset.i;d()})}
+sl.oninput=d;d();
+
+</script></body></html>
