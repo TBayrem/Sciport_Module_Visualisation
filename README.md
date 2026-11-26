@@ -164,10 +164,10 @@ Umgesetzt:
 - Themenkarte mit drei Projektionen, zwei Clusterverfahren und Themenübersicht
 - kombinierte Ansicht mit Ähnlichkeitskanten, Schwellenwert-Regler und Balkendiagramm für Projekte und Publikationen
 - vollständige Analyse in Ruby mit nächtlicher Ausführung
+- automatisierte Tests (über 60 Testfälle in `test/` für Analyse, Modelle, Visualisierungslogik und Seiten; Aufruf `ruby bin/rails test`)
 
 Offen:
 
-- automatisierte Tests (Ordner `test/` noch ohne eigene Tests)
 - Suche und Auswahl für Projekte, Publikationen, Schlagwörter und Themen
 - Tooltip der Themenkarte mit Einrichtung und Kennzahlen
 - „Zurücksetzen“ auch für Zoom und Parameter
@@ -181,3 +181,8 @@ Offen:
 ## 11. Wissenschaftlicher Kontext und Lizenz
 
 Entwurf, Umsetzung und Evaluation sind in der Masterarbeit beschrieben (Kapitel 4 bis 6). Lizenz und eine mögliche Veröffentlichung sind vor einer öffentlichen Freigabe mit der Hochschule Worms und den Betreibern von SciPort RLP zu klären.
+
+## 11. Dokumentation
+
+- [`docs/Artikel_SciPort_Visualisierungsmodul.md`](docs/Artikel_SciPort_Visualisierungsmodul.md): Artikel zu Problem, Architektur, Analyse und Grenzen
+- [`docs/SciPort_Visualisierungsmodul.pdf`](docs/SciPort_Visualisierungsmodul.pdf): Präsentation (10 Folien)
